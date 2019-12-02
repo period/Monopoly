@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Monopoly - Game</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+        <style>
+            .board {
+                background-color: #BFDBAE;
+                height: 80vw;
+                width: 80vw;
+            }
+
+            .header {
+                height: 15%;
+            }
+
+            .header, .top {
+                bottom: 1px;
+                left: 1px;
+                right: 1px;
+            }
+
+            .top-strip {
+                height: 15%;
+                width: 100%;
+                display: flex;
+                left: 1px;
+                right: 1px;
+                bottom: 30%;
+                height: 10%;
+            }
+
+            .red {
+                background-color: red;
+            }
+            .yellow {
+                background-color: yellow;
+            }
+            .brown {
+                background-color: saddlebrown;
+            }
+            .light-blue {
+                background-color: skyblue;
+            }
+            .pink {
+                background-color: darkorchid;
+            }
+            .orange {
+                background-color: orange;
+            }
+            .green {
+                background-color: green;
+            }
+            .blue {
+                background-color: blue;
+            }
+            .property {
+                outline: 1px solid black;
+                flex-grow: 1;
+                position: relative;
+            }
+            .top-strip > .property {
+                width: 8.4%;
+            }
+            .corner {
+                flex-grow: 2;
+                outline: 1px solid black;
+                display: flex;
+                width: 12%;
+                flex-direction: column;
+                position: relative;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container board text-center">
+            <div class="top-strip">
+                <div class="corner">
+                    <p>Free Parking</p>
+                </div>
+                <div class="property">
+                    <div class="header top red"></div>
+                    <p class="title">Stand</p>
+                    <p class="price">M220</p>
+                </div>
+                <div class="property">
+                    <div class="header top chance"></div>
+                    <p class="title">Chance</p>
+                </div>
+                <div class="property">
+                    <div class="header top red"></div>
+                    <p class="title">Fleet Street</p>
+                    <p class="price">M220</p>
+                </div>
+                <div class="property">
+                    <div class="header top red"></div>
+                    <p class="title">Trafalgar Square</p>
+                    <p class="price">M240</p>
+                </div>
+                <div class="property">
+                    <div class="header top station"></div>
+                    <p class="title">Fenchurch St. Station</p>
+                    <p class="price">M200</p>
+                </div>
+                <div class="property">
+                    <div class="header top yellow"></div>
+                    <p class="title">Leicester Square</p>
+                    <p class="price">M260</p>
+                </div>
+                <div class="property">
+                    <div class="header top yellow"></div>
+                    <p class="title">Coventry Street</p>
+                    <p class="price">M260</p>
+                </div>
+                <div class="property">
+                    <div class="header top water-works"></div>
+                    <p class="title">Water Works</p>
+                    <p class="price">M150</p>
+                </div>
+                <div class="property">
+                    <div class="header top yellow"></div>
+                    <p class="title">Piccadilly</p>
+                    <p class="price">M280</p>
+                </div>
+                <div class="corner">
+                    <p>Go to Jail</p>
+                </div>
+            </div>
+            <div class="top-strip bottom-strip">
+                    <div class="corner">
+                        <p>Jail</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top light-blue"></div>
+                        <p class="title">Pentonville Road</p>
+                        <p class="price">M120</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top light-blue"></div>
+                        <p class="title">Euston Road</p>
+                        <p class="price">M100</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top chance"></div>
+                        <p class="title">Chance</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top light-blue"></div>
+                        <p class="title">The Angel, Islington</p>
+                        <p class="price">M100</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top station"></div>
+                        <p class="title">Kings Cross Station</p>
+                        <p class="price">M200</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top income-tax"></div>
+                        <p class="title">Income Tax</p>
+                        <p class="price">M200</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top brown"></div>
+                        <p class="title">Whitechapel Road</p>
+                        <p class="price">M60</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top community-chest"></div>
+                        <p class="title">Community Chest</p>
+                    </div>
+                    <div class="property">
+                        <div class="header top brown"></div>
+                        <p class="title">Old Kent Road</p>
+                        <p class="price">M60</p>
+                    </div>
+                    <div class="corner">
+                        <p>GO</p>
+                    </div>
+                </div>
+        </div>
+    </body>
+
+</html>
