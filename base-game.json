@@ -1,1 +1,337 @@
-{}
+{
+    "players": [],
+    "available-positions": ["Dog", "Hat", "Thimble", "Boot", "Wheelbarrow", "Car", "Battleship"],
+    "station-rents": [25, 50, 100, 200],
+    "properties": [
+        {
+            "position": 1,
+            "type": "house",
+            "colour": "brown",
+            "name": "Old Kent Road",
+            "price": 60,
+            "owner": null,
+            "pricing": {"house": 50, "hotel": 50},
+            "rent": [2, 10, 30, 90, 160, 250],
+            "addons": []
+        },
+        {
+            "position": 2,
+            "type": "community-chest"
+        },
+        {
+            "position": 3,
+            "type": "house",
+            "colour": "brown",
+            "name": "Whitechapel Road",
+            "price": 60,
+            "owner": null,
+            "pricing": {"house": 50, "hotel": 50},
+            "rent": [4, 20, 60, 180, 320, 450],
+            "addons": []
+        },
+        {
+            "position": 4,
+            "type": "tax",
+            "name": "Income Tax",
+            "tax": 200
+        },
+        {
+            "position": 5,
+            "type": "station",
+            "name": "Kings Cross Station",
+            "price": 200,
+            "owner": null
+        },
+        {
+            "position": 6,
+            "type": "house",
+            "colour": "light-blue",
+            "name": "The Angel, Islington",
+            "price": 100,
+            "owner": null,
+            "pricing": {"house": 50, "hotel": 50},
+            "rent": [6, 30, 90, 270, 400, 550],
+            "addons": []
+        },
+        {
+            "position": 7,
+            "type": "chance"
+        },
+        {
+            "position": 8,
+            "type": "house",
+            "colour": "light-blue",
+            "name": "Euston Road",
+            "price": 100,
+            "owner": null,
+            "pricing": {"house": 50, "hotel": 50},
+            "rent": [6, 330, 90, 270, 400, 550],
+            "addons": []
+        },
+        {
+            "position": 9,
+            "type": "house",
+            "colour": "light-blue",
+            "name": "Pentonville Road",
+            "price": 120,
+            "owner": null,
+            "pricing": {"house": 50, "hotel": 50},
+            "rent": [8, 40, 100, 300, 450, 600],
+            "addons": []
+        },
+        {
+            "position": 10,
+            "type": "jail"
+        },
+        {
+            "position": 11,
+            "type": "house",
+            "colour": "pink",
+            "name": "Pall Mall",
+            "price": 140,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [10, 50, 150, 450, 625, 750],
+            "addons": []
+        },
+        {
+            "position": 12,
+            "type": "utility",
+            "name": "Electricity Company",
+            "price": 150
+        },
+        {
+            "position": 13,
+            "type": "house",
+            "colour": "pink",
+            "name": "Whitehall",
+            "price": 140,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [10, 50, 150, 450, 625, 750],
+            "addons": []
+        },
+        {
+            "position": 14,
+            "type": "house",
+            "colour": "pink",
+            "name": "Northumberland",
+            "price": 160,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [12, 60, 180, 500, 700, 900],
+            "addons": []
+        },
+        {
+            "position": 15,
+            "type": "station",
+            "name": "Marylebone Station",
+            "price": 200,
+            "owner": null
+        },
+        {
+            "position": 16,
+            "type": "house",
+            "colour": "orange",
+            "name": "Bow Street",
+            "price": 180,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [14, 70, 200, 550, 750, 950],
+            "addons": []
+        },
+        {
+            "position": 17,
+            "type": "community-chest"
+        },
+        {
+            "position": 18,
+            "type": "house",
+            "colour": "orange",
+            "name": "Marlborough Street",
+            "price": 180,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [14, 70, 200, 550, 750, 950],
+            "addons": []
+        },
+        {
+            "position": 19,
+            "type": "house",
+            "colour": "orange",
+            "name": "Vine Street",
+            "price": 200,
+            "owner": null,
+            "pricing": {"house": 100, "hotel": 100},
+            "rent": [16, 80, 220, 600, 800, 1000],
+            "addons": []
+        },
+        {
+            "position": 20,
+            "type": "free-parking"
+        },
+        {
+            "position": 21,
+            "type": "house",
+            "colour": "red",
+            "name": "Strand",
+            "price": 220,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [18, 90, 250, 700, 875, 1050],
+            "addons": []
+        },
+        {
+            "position": 22,
+            "type": "chance"
+        },
+        {
+            "position": 23,
+            "type": "house",
+            "colour": "red",
+            "name": "Fleet Street",
+            "price": 220,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [18, 90, 250, 700, 875, 1050],
+            "addons": []
+        },
+        {
+            "position": 24,
+            "type": "house",
+            "colour": "red",
+            "name": "Trafalgar Square",
+            "price": 240,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [20, 100, 300, 750, 925, 1100],
+            "addons": []
+        },
+        {
+            "position": 25,
+            "type": "station",
+            "name": "Fenchurch St. Station",
+            "price": 200,
+            "owner": null
+        },
+        {
+            "position": 26,
+            "type": "house",
+            "colour": "yellow",
+            "name": "Leicester Square",
+            "price": 260,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [22, 110, 330, 800, 975, 1150],
+            "addons": []
+        },
+        {
+            "position": 27,
+            "type": "house",
+            "colour": "yellow",
+            "name": "Coventry Street",
+            "price": 260,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [22, 110, 330, 800, 975, 1150],
+            "addons": []
+        },
+        {
+            "position": 28,
+            "type": "utility",
+            "name": "Water Works",
+            "price": 150
+        },
+        {
+            "position": 29,
+            "type": "house",
+            "colour": "yellow",
+            "name": "Piccadilly",
+            "price": 280,
+            "owner": null,
+            "pricing": {"house": 150, "hotel": 150},
+            "rent": [24, 120, 360, 850, 1025, 1200],
+            "addons": []
+        },
+        {
+            "position": 30,
+            "type": "go-to-jail"
+        },
+        {
+            "position": 31,
+            "type": "house",
+            "colour": "green",
+            "name": "Regent Street",
+            "price": 300,
+            "owner": null,
+            "pricing": {"house": 200, "hotel": 200},
+            "rent": [26, 130, 390, 900, 1100, 1275],
+            "addons": []
+        },
+        {
+            "position": 32,
+            "type": "house",
+            "colour": "green",
+            "name": "Oxford Street",
+            "price": 300,
+            "owner": null,
+            "pricing": {"house": 200, "hotel": 200},
+            "rent": [26, 130, 390, 900, 1100, 1275],
+            "addons": []
+        },
+        {
+            "position": 33,
+            "type": "community-chest"
+        },
+        {
+            "position": 34,
+            "type": "house",
+            "colour": "green",
+            "name": "Bond Street",
+            "price": 320,
+            "owner": null,
+            "pricing": {"house": 200, "hotel": 200},
+            "rent": [28, 150, 450, 1000, 1200, 1400],
+            "addons": []
+        },
+        {
+            "position": 35,
+            "type": "station",
+            "name": "Liverpool St. Station",
+            "price": 200,
+            "owner": null
+        },
+        {
+            "position": 36,
+            "type": "chance"
+        },
+        {
+            "position": 37,
+            "type": "house",
+            "colour": "blue",
+            "name": "Park Lane",
+            "price": 350,
+            "owner": null,
+            "pricing": {"house": 200, "hotel": 200},
+            "rent": [35, 175, 500, 1100, 1300, 1500],
+            "addons": []
+        },
+        {
+            "position": 38,
+            "type": "tax",
+            "name": "Super Tax",
+            "tax": 100
+        },
+        {
+            "position": 39,
+            "type": "house",
+            "colour": "blue",
+            "name": "Mayfair",
+            "price": 400,
+            "owner": null,
+            "pricing": {"house": 200, "hotel": 200},
+            "rent": [50, 200, 600, 1400, 1700, 2000],
+            "addons": []
+        }
+    ]
+}
