@@ -32,7 +32,28 @@ io.on("connection", function(socket) {
         if(games[data] == null) return socket.emit("eval", "window.location.href = \"./\"");
         socket.gid = data;
         socket.join(data);
-        socket.emit("message", {type: "success", message: "Successfully joined game"});
+        socket.emit("message", {type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)"});
+        if(games[data].state == "Lobby" && io.sockets.adapter.rooms[data].length == 2) {
+            var countdown = 15;
+            games[data].state = "Starting";
+            var countdownTimer = setInterval(() => {
+                io.to(data).emit("countdown", countdown);
+                countdown--;
+                if(countdown == -1) {
+                    clearInterval(countdownTimer);
+                    if(io.sockets.adapter.rooms[data].length < 1) {
+                        socket.emit("message", {type: "warning", message: "Not enough players... (" + io.sockets.adapter.rooms[data].length + " in room)"});
+                        countdown = 15;
+                        games[data].state = "Lobby";
+                    }
+                    else {
+                        socket.emit("message", {type: "success", message: "Game has started! (" + io.sockets.adapter.rooms[data].length + " in room)"});
+                        games[data].state = "Ingame";
+                        nextRound(data);
+                    }
+                }
+            }, 1000);
+        }
     })
     socket.on("roll-dice", function() {
         rollDice(socket.gid, function() {
@@ -61,4 +82,8 @@ function rollDice(gameId, callback) {
             }, 1500); // there's a delay on the client end to allow user to see the result. we'll delay the callback the same amount to stop the game progressing
         }
     }, 100);
+}
+
+function nextRound(gameId) {
+
 }

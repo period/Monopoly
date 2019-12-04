@@ -261,6 +261,7 @@
         <div class="container">
             <div class="row text-center">
                 <h1>Monopoly</h1>
+                <div id="messages"></div>
             </div>
         </div>
         <div class="container board text-center">
@@ -550,6 +551,30 @@
             setTimeout(function () {
                 $("#dice-modal").modal("hide");
             }, 1500);
+        })
+        var hasCountdown = false;
+        socket.on("message", function(data) {
+            // messaging system
+            var current = $("#messages").html();
+            var messageId = "message_" + Math.random().toString(36).substring(7);
+            $("#messages").html(current + "<div class=\"alert alert-" +data.type+ "\" id=\"" +messageId+ "\">" + data.message + "</div>");
+            setTimeout(() => {
+                $("#" + messageId).remove();
+            }, 7500);
+        })
+        socket.on("countdown", function(data) {
+            // countdown for game start
+            if(hasCountdown == false) {
+                var current = $("#messages").html();
+                $("#messages").html(current + "<div class=\"alert alert-info\" id=\"countdown-alert\">The game is starting in <span id=\"countdown-seconds\">" + data + "</span> seconds</div>");
+                hasCountdown = true;
+            }
+            else $("#countdown-seconds").text(data);
+
+            if(data == 0) {
+                hasCountdown = false;
+                $("#countdown-alert").remove();
+            }
         })
     </script>
 
