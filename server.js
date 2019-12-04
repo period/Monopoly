@@ -16,15 +16,20 @@ app.get("/board", function(req, res) {
 })
 app.use(express.static("public"));
 
+games["test"] = JSON.parse(fs.readFileSync("base-game.json"));
+
 app.get("/create-game", function(req, res) {
-    res.header("Content-Type", "text/html");
+    var gameId = Math.random().toString(36).substring(8); // game ids are random 4char strings
+    games[gameId] = JSON.parse(fs.readFileSync("base-game.json"));
+    res.header("Content-Type", "application/json");
+    res.send(JSON.stringify({game: gameId}));
 
 })
 
 io.on("connection", function(socket) {
     socket.on("join-room", function(data) {
         data = data.toString();
-        //if(games[data] == null) return socket.emit("eval", "window.location.href = \"./\"");
+        if(games[data] == null) return socket.emit("eval", "window.location.href = \"./\"");
         socket.gid = data;
         socket.join(data);
         socket.emit("message", {type: "success", message: "Successfully joined game"});
@@ -53,7 +58,7 @@ function rollDice(gameId, callback) {
             clearInterval(diceRoller);
             setTimeout(function() {
                 callback(diceA, diceB);
-            }, 1500); // there's a delay on the client end to allow user to see the result. we'll delay the callback the same amount to stop the game progressing too much
+            }, 1500); // there's a delay on the client end to allow user to see the result. we'll delay the callback the same amount to stop the game progressing
         }
     }, 100);
 }
