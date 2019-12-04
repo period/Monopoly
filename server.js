@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const http = require("http").Server(app);
 const fs = require("fs");
 const io = require("socket.io")(http);
@@ -13,6 +14,7 @@ app.get("/board", function(req, res) {
     res.header("Content-Type", "text/html");
     res.send(fs.readFileSync("board.html"));
 })
+app.use(express.static("public"));
 
 app.get("/create-game", function(req, res) {
     res.header("Content-Type", "text/html");
@@ -49,7 +51,9 @@ function rollDice(gameId, callback) {
         if(counter == 0) {
             io.to(gameId).emit("dice-stop");
             clearInterval(diceRoller);
-            callback(diceA, diceB);
+            setTimeout(function() {
+                callback(diceA, diceB);
+            }, 1500); // there's a delay on the client end to allow user to see the result. we'll delay the callback the same amount to stop the game progressing too much
         }
     }, 100);
 }
