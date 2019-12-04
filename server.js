@@ -28,7 +28,9 @@ io.on("connection", function(socket) {
         socket.emit("message", {type: "success", message: "Successfully joined game"});
     })
     socket.on("roll-dice", function() {
-        rollDice(socket.gid);
+        rollDice(socket.gid, function() {
+            
+        });
     })
 });
 
@@ -38,12 +40,14 @@ http.listen(1337, function() {
 
 function rollDice(gameId, callback) {
     var counter = 10;
+    io.to(gameId).emit("dice-start");
     var diceRoller = setInterval(() => {
         var diceA = Math.floor(Math.random() * 6) + 1;
         var diceB = Math.floor(Math.random() * 6) + 1;
         io.to(gameId).emit("dice", {a: diceA, b: diceB});
         counter--;
         if(counter == 0) {
+            io.to(gameId).emit("dice-stop");
             clearInterval(diceRoller);
             callback(diceA, diceB);
         }

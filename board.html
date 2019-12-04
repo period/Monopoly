@@ -222,10 +222,46 @@
         .rotate-270 {
             transform: rotate(270deg);
         }
+
+        .dice-number {
+            outline: 5px solid black;
+            height: 50%;
+            width: 50%;
+        }
     </style>
 </head>
 
 <body>
+    <div id="dice-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Dice Rolling</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row center text-center">
+                        <div class="col-md-4">
+                            <h1 class="dice-number" id="dice-number-a">6</h1>
+                        </div>
+                        <div class="col-md-2">
+                            <h2>+</h2>
+                        </div>
+                        <div class="col-md-4">
+                            <h1 class="dice-number" id="dice-number-b">5</h1>
+                        </div>
+                        <div class="col-md-2">
+                            <h2>= <span id="dice-total">5</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="container">
         <div class="row text-center">
             <h1>Monopoly</h1>
@@ -237,7 +273,7 @@
                 <p>Free Parking</p>
             </div>
             <div class="property">
-                <div class="header top red" property="Strand"></div>
+                <div class="header top red" property="Strand"><i class="fa fa-home"></i><i class="fa fa-home"></i></div>
                 <p class="title">Stand</p>
                 <p class="price">M220</p>
             </div>
@@ -287,7 +323,7 @@
         <div class="side-strip">
             <div class="left-strip">
                 <div class="property rotate-180">
-                    <div class="header header-left orange" property="Vine Street"></div>
+                    <div class="header header-left orange" property="Vine Street"><i class="rotate-180 fa fa-home"></i></div>
                     <div class="rotate-180">
                         <p class="title">Vine Street</p>
                         <p class="price">M200</p>
@@ -455,8 +491,27 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"
     integrity="sha256-0YA7ixx4+I4GrLichcjWSQHIUSQiI8ojTDqsK7AZ5zU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 <script>
     var socket = io();
+
+    socket.on("dice-start", function () {
+        // Dice has started to roll so we should open up the modal.
+        $("#dice-modal").modal("show");
+    })
+    socket.on("dice", function (data) {
+        // Dice rolling
+        $("#dice-number-a").text(data.a);
+        $("#dice-number-b").text(data.b);
+        $("#dice-total").text(data.a + data.b)
+    })
+    socket.on("dice-finish", function () {
+        // Dice has completed rolling
+        setTimeout(function () {
+            $("#dice-modal").modal("hide");
+        }, 1000);
+    })
 </script>
 
 </html>
