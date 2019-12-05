@@ -590,7 +590,14 @@
             }
         })
         socket.on("move-update", function(data) {
-
+            $("#player-piece-" + data.player).remove();
+            $(".player-item-store").each(function() {
+                var positionOfProp = $(this).attr("position");
+                if(positionOfProp == data.position) {
+                    var current = $(this).html();
+                    $(this).html(current + "<i id=\"player-piece-" + data.player + "\" class=\"" + pieceToFa[data.player] + "\"></i>")
+                }
+            })
         })
     </script>
 
