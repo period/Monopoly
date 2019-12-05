@@ -141,6 +141,18 @@ function moveToPosition(gameId, player, amount, callback) {
                 updateBalance(gameId, player, games[gameId].properties[player.position].tax);
                 updateFreeParking(gameId, games[gameId].properties[player.position].tax);
             }
+            else if(games[gameId].properties[player.position].type == "house" || games[gameId].properties[player.position].type == "utility" || games[gameId].properties[player.position].type == "station")  {
+                if(games[gameId].properties[player.position].owner != null && games[gameId].properties[player.position].owner.piece != player.piece) {
+                    var rentPayable = 0;
+                    if(games[gameId].properties[player.position].type == "station") {
+                        var stationsOwnedBySameOwner = 0;
+                        for(var i = 0; i < games[gameId].properties.length; i++) {
+                            if(games[gameId].properties[i].type == "station" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) stationsOwnedBySameOwner++;
+                        }
+                        rentPayable = games[gameId]["station-rents"][stationsOwnedBySameOwner-1];
+                    }
+                }
+            }
             callback();
         }
     }, 250);
@@ -162,6 +174,7 @@ function nextRound(gameId) {
         games[gameId]["has-played-round"] = [];
         return nextRound(gameId);
     }
+    games[gameId].currentPiece = currentPlayer.piece;
     io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!" });
 
     rollDice(gameId, function (diceA, diceB, sum) {
