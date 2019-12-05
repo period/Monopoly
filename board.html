@@ -529,11 +529,18 @@
     <script>
         var socket = io();
 
+        var piece;
+
         socket.on("connect", function () {
             socket.emit("join-room", window.location.hash.replace("#", ""));
         })
         socket.on("eval", function(data) {
             eval(data.toString());
+        })
+
+        socket.on("piece-selected", function(data) {
+            data = data.toString();
+            piece = data;
         })
 
         socket.on("dice-start", function () {
