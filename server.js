@@ -54,6 +54,7 @@ io.on("connection", function (socket) {
                             sock.emit("piece-selected", selectedPiece);
                             sock.piece = selectedPiece;
                             sock.balance = 1500;
+                            sock.position = 0;
                             games[data].players.push(sock);
                         }
                         nextRound(data);
@@ -98,30 +99,57 @@ function rollDice(gameId, callback) {
         }
     }, 100);
 }
+function executePosition(gameId, player, callback) {
+    callback();
+}
+function updateBalance(gameId, player, amount) {
+    player.balance += amount;
+    io.to(gameId).emit("balance-update", { player: player.piece, balance: player.balance });
+}
+function moveToPosition(gameId, player, amount, callback) {
+    var toGo = amount;
+    var mover = setInterval(() => {
+        toGo--;
+        player.position++;
+        if (player.position >= 40) {
+            player.position = 0;
+            // Passed go, issue 200
+            updateBalance(gameId, player, 200);
+        }
+        io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
+        if (toGo == 0) {
+            clearInterval(mover);
+            callback();
+        }
+    }, 250);
+}
 
 function nextRound(gameId) {
     if (games[gameId] == null) return;
     if (games[gameId].players.length <= 1) return gameOver(gameId); // no players OR just one player remaining
-        // First step is to find the next player!
-        var currentPlayer = null;
-        for (var i = 0; i < games[gameId].players.length; i++) {
-            if (games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
-                currentPlayer = games[gameId].players[i];
-                games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
-                break;
-            }
+    // First step is to find the next player!
+    var currentPlayer = null;
+    for (var i = 0; i < games[gameId].players.length; i++) {
+        if (games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
+            currentPlayer = games[gameId].players[i];
+            games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
+            break;
         }
-        if (currentPlayer == null) { // No player found - maybe we filled the array. Clear it, retry.
-            games[gameId]["has-played-round"] = [];
-            return nextRound(gameId);
-        }
-        io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!" });
+    }
+    if (currentPlayer == null) { // No player found - maybe we filled the array. Clear it, retry.
+        games[gameId]["has-played-round"] = [];
+        return nextRound(gameId);
+    }
+    io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!" });
 
-        rollDice(gameId, function (diceA, diceB, sum) {
-            io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>." });
-
-            nextRound(gameId);
+    rollDice(gameId, function (diceA, diceB, sum) {
+        io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>." });
+        moveToPosition(gameId, currentPlayer, sum, function () {
+            setTimeout(function () {
+                nextRound(gameId);
+            }, 1000);
         })
+    })
 }
 function gameOver(gameId) {
     io.to(gameId).emit("game-over");

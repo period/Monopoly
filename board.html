@@ -568,6 +568,9 @@
             var messageId = "message_" + Math.random().toString(36).substring(7);
             $("#messages").html(current + "<div class=\"alert alert-" + data.type + "\" id=\"" + messageId + "\">" + data.message + "</div>");
             setTimeout(() => {
+                $("#" + messageId).fadeOut(2500);
+            }, 5000);
+            setTimeout(() => {
                 $("#" + messageId).remove();
             }, 7500);
         })
