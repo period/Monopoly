@@ -123,14 +123,19 @@ function moveToPosition(gameId, player, amount, callback) {
         }
         if(games[gameId].properties[player.position].type == "go-to-jail") {
             player.position = 10; // landed on go to jail; send to jail
-            io.to(gameId).emit("message", { type: "warning", message: "<strong>" + currentPlayer.piece + "</strong> was sent to jail and paid M50 for release."});
+            io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was sent to jail and paid M50 for release."});
             updateBalance(gameId, player, -50);
             updateFreeParking(gameId, 50);
         }
         else if(games[gameId].properties[player.position].type == "free-parking") {
-            io.to(gameId).emit("message", { type: "success", message: "<strong>" + currentPlayer.piece + "</strong> landed on free parking and collected M" +games[gameId]["free-parking"]+ "."});   
+            io.to(gameId).emit("message", { type: "success", message: "<strong>" + player.piece + "</strong> landed on free parking and collected M" +games[gameId]["free-parking"]+ "."});   
             updateBalance(gameId, player, games[gameId]["free-parking"]);
-            updateFreeParking(gameId, amount);
+            updateFreeParking(gameId, 0-amount);
+        }
+        else if(games[gameId].properties[player.position].type == "tax") {
+            io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was ordered to pay <strong>" + games[gameId].properties[player.position].tax + "</strong> in tax."});
+            updateBalance(gameId, player, games[gameId].properties[player.position].tax);
+            updateFreeParking(gameId, games[gameId].properties[player.position].tax);
         }
         io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
         if (toGo == 0) {
