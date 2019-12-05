@@ -534,13 +534,15 @@
         socket.on("connect", function () {
             socket.emit("join-room", window.location.hash.replace("#", ""));
         })
-        socket.on("eval", function(data) {
+        socket.on("eval", function (data) {
             eval(data.toString());
         })
 
-        socket.on("piece-selected", function(data) {
+        socket.on("piece-selected", function (data) {
             data = data.toString();
             piece = data;
+            var current = $("#messages").html();
+            $("#messages").html(current + "<div class=\"alert alert-info\">You are <strong>" + piece + "</strong>.</div>");
         })
 
         socket.on("dice-start", function () {
@@ -560,25 +562,25 @@
             }, 1500);
         })
         var hasCountdown = false;
-        socket.on("message", function(data) {
+        socket.on("message", function (data) {
             // messaging system
             var current = $("#messages").html();
             var messageId = "message_" + Math.random().toString(36).substring(7);
-            $("#messages").html(current + "<div class=\"alert alert-" +data.type+ "\" id=\"" +messageId+ "\">" + data.message + "</div>");
+            $("#messages").html(current + "<div class=\"alert alert-" + data.type + "\" id=\"" + messageId + "\">" + data.message + "</div>");
             setTimeout(() => {
                 $("#" + messageId).remove();
             }, 7500);
         })
-        socket.on("countdown", function(data) {
+        socket.on("countdown", function (data) {
             // countdown for game start
-            if(hasCountdown == false) {
+            if (hasCountdown == false) {
                 var current = $("#messages").html();
                 $("#messages").html(current + "<div class=\"alert alert-info\" id=\"countdown-alert\">The game is starting in <span id=\"countdown-seconds\">" + data + "</span> seconds</div>");
                 hasCountdown = true;
             }
             else $("#countdown-seconds").text(data);
 
-            if(data == 0) {
+            if (data == 0) {
                 hasCountdown = false;
                 $("#countdown-alert").remove();
             }

@@ -100,30 +100,32 @@ function rollDice(gameId, callback) {
 }
 
 function nextRound(gameId) {
-    if(games[gameId] == null) return;
+    if (games[gameId] == null) return;
     if (games[gameId].players.length <= 1) return gameOver(gameId); // no players OR just one player remaining
-
-    // First step is to find the next player!
-    var currentPlayer = null;
-    for(var i = 0; i < games[gameId].players.length; i++) {
-        if(games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
-            currentPlayer = games[gameId].players[i];
-            games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
+        // First step is to find the next player!
+        var currentPlayer = null;
+        for (var i = 0; i < games[gameId].players.length; i++) {
+            if (games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
+                currentPlayer = games[gameId].players[i];
+                games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
+                break;
+            }
         }
-    }
-    if(currentPlayer == null) { // No player found - maybe we filled the array. Clear it, retry.
-        games[gameId]["has-played-round"] = [];
-        return nextRound(gameId);
-    }
-    io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!"});
+        if (currentPlayer == null) { // No player found - maybe we filled the array. Clear it, retry.
+            games[gameId]["has-played-round"] = [];
+            return nextRound(gameId);
+        }
+        io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!" });
 
-    rollDice(gameId, function(diceA, diceB, sum) {
-        io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>."});
-    })
+        rollDice(gameId, function (diceA, diceB, sum) {
+            io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>." });
+
+            nextRound(gameId);
+        })
 }
 function gameOver(gameId) {
     io.to(gameId).emit("game-over");
-    setTimeout(function() {
+    setTimeout(function () {
         io.to(gameId).emit("eval", "window.location.href = \"./\"");
         games[gameId] = null;
     }, 15000);
