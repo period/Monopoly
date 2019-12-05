@@ -159,6 +159,25 @@ function moveToPosition(gameId, player, amount, callback) {
                         if(utilitiesOwnedBySameOwner == 2) rentPayable = amount * 10;
                         else rentPayable = amount * 4;
                     }
+                    else if(games[gameId].properties[player.position].type == "house") {
+                        var housesSameColourOwnedBySameOwner = 0;
+                        for(var i = 0; i < games[gameId].properties.length; i++) {
+                            if(games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) housesSameColourOwnedBySameOwner++;
+                        }
+                        var propertiesInGroup = 3;
+                        if(games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
+                        
+                        rentPayable = games[gameId].properties[player.position].rent[0]; // get base rent no houses
+                        if(propertiesInGroup == housesSameColourOwnedBySameOwner) rentPayable = rentPayable * 2; // double rent due to having no houses but full set
+
+                        // it gets a bit more complicated calculating rent for houses/hotel...
+                        var houses = 0;
+                        var hasHotel = false;
+                        for(var i = 0; i < games[gameId].properties[player.position].addons.length; i++) {
+                            if(games[gameId].properties[player.position].addons[i] == "house") houses++;
+                            else hasHotel = true;
+                        }
+                    }
                 }
             }
             callback();
