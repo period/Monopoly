@@ -34,7 +34,7 @@ io.on("connection", function (socket) {
         socket.join(data);
         socket.emit("message", { type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)" });
         if (games[data].state == "Lobby" && io.sockets.adapter.rooms[data].length == 2) {
-            var countdown = 3;
+            var countdown = 10;
             games[data].state = "Starting";
             var countdownTimer = setInterval(() => {
                 io.to(data).emit("countdown", countdown);
@@ -102,6 +102,11 @@ function rollDice(gameId, callback) {
 function executePosition(gameId, player, callback) {
     callback();
 }
+function updateFreeParking(gameId, amount) {
+    games[gameId]["free-parking"] += amount;
+    io.to(gameId).emit("free-parking", games[gameId]["free-parking"]);
+    io.to(gameId).emit("message", { type: "info", message: "Free Parking updated! There's now M" + games[gameId]["free-parking"] + " up for grabs."});   
+}
 function updateBalance(gameId, player, amount) {
     player.balance += amount;
     io.to(gameId).emit("balance-update", { player: player.piece, balance: player.balance });
@@ -115,6 +120,17 @@ function moveToPosition(gameId, player, amount, callback) {
             player.position = 0;
             // Passed go, issue 200
             updateBalance(gameId, player, 200);
+        }
+        if(games[gameId].properties[player.position].type == "go-to-jail") {
+            player.position = 10; // landed on go to jail; send to jail
+            io.to(gameId).emit("message", { type: "warning", message: "<strong>" + currentPlayer.piece + "</strong> was sent to jail and paid M50 for release."});
+            updateBalance(gameId, player, -50);
+            updateFreeParking(gameId, 50);
+        }
+        else if(games[gameId].properties[player.position].type == "free-parking") {
+            io.to(gameId).emit("message", { type: "success", message: "<strong>" + currentPlayer.piece + "</strong> landed on free parking and collected M" +games[gameId]["free-parking"]+ "."});   
+            updateBalance(gameId, player, games[gameId]["free-parking"]);
+            updateFreeParking(gameId, amount);
         }
         io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
         if (toGo == 0) {
