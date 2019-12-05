@@ -151,6 +151,14 @@ function moveToPosition(gameId, player, amount, callback) {
                         }
                         rentPayable = games[gameId]["station-rents"][stationsOwnedBySameOwner-1];
                     }
+                    else if(games[gameId].properties[player.position].type == "utility") {
+                        var utilitiesOwnedBySameOwner = 0;
+                        for(var i = 0; i < games[gameId].properties.length; i++) {
+                            if(games[gameId].properties[i].type == "utility" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) utilitiesOwnedBySameOwner++;
+                        }
+                        if(utilitiesOwnedBySameOwner == 2) rentPayable = amount * 10;
+                        else rentPayable = amount * 4;
+                    }
                 }
             }
             callback();
