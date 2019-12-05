@@ -527,6 +527,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js" integrity="sha256-0YA7ixx4+I4GrLichcjWSQHIUSQiI8ojTDqsK7AZ5zU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
     <script>
+        var pieceToFa = {"Battleship": "fa fa-ship", "Car": "fa fa-car"}
         var socket = io();
 
         var piece;
@@ -587,6 +588,9 @@
                 hasCountdown = false;
                 $("#countdown-alert").remove();
             }
+        })
+        socket.on("move-update", function(data) {
+
         })
     </script>
 
