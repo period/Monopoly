@@ -68,6 +68,9 @@ io.on("connection", function (socket) {
 
         });
     })
+    socket.on("force-nextround", function() {
+        games[socket.gid].nextRoundCountdown = 0;
+    });
 });
 
 http.listen(1337, function () {
@@ -105,7 +108,7 @@ function executePosition(gameId, player, callback) {
 function updateFreeParking(gameId, amount) {
     games[gameId]["free-parking"] += amount;
     io.to(gameId).emit("free-parking", games[gameId]["free-parking"]);
-    io.to(gameId).emit("message", { type: "info", message: "Free Parking updated! There's now M" + games[gameId]["free-parking"] + " up for grabs."});   
+    io.to(gameId).emit("message", { type: "info", message: "Free Parking updated! There's now M" + games[gameId]["free-parking"] + " up for grabs." });
 }
 function updateBalance(gameId, player, amount) {
     player.balance += amount;
@@ -124,57 +127,57 @@ function moveToPosition(gameId, player, amount, callback) {
         io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
         if (toGo == 0) {
             clearInterval(mover);
-            if(games[gameId].properties[player.position].type == "go-to-jail") {
+            if (games[gameId].properties[player.position].type == "go-to-jail") {
                 player.position = 10; // landed on go to jail; send to jail
                 io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
-                io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was sent to jail and paid M50 for release."});
+                io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was sent to jail and paid M50 for release." });
                 updateBalance(gameId, player, -50);
                 updateFreeParking(gameId, 50);
             }
-            else if(games[gameId].properties[player.position].type == "free-parking") {
-                io.to(gameId).emit("message", { type: "success", message: "<strong>" + player.piece + "</strong> landed on free parking and collected M" +games[gameId]["free-parking"]+ "."});   
+            else if (games[gameId].properties[player.position].type == "free-parking") {
+                io.to(gameId).emit("message", { type: "success", message: "<strong>" + player.piece + "</strong> landed on free parking and collected M" + games[gameId]["free-parking"] + "." });
                 updateBalance(gameId, player, games[gameId]["free-parking"]);
-                updateFreeParking(gameId, 0-amount);
+                updateFreeParking(gameId, 0 - amount);
             }
-            else if(games[gameId].properties[player.position].type == "tax") {
-                io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was ordered to pay <strong>" + games[gameId].properties[player.position].tax + "</strong> in tax."});
+            else if (games[gameId].properties[player.position].type == "tax") {
+                io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was ordered to pay <strong>" + games[gameId].properties[player.position].tax + "</strong> in tax." });
                 updateBalance(gameId, player, games[gameId].properties[player.position].tax);
                 updateFreeParking(gameId, games[gameId].properties[player.position].tax);
             }
-            else if(games[gameId].properties[player.position].type == "house" || games[gameId].properties[player.position].type == "utility" || games[gameId].properties[player.position].type == "station")  {
-                if(games[gameId].properties[player.position].owner != null && games[gameId].properties[player.position].owner.piece != player.piece) {
+            else if (games[gameId].properties[player.position].type == "house" || games[gameId].properties[player.position].type == "utility" || games[gameId].properties[player.position].type == "station") {
+                if (games[gameId].properties[player.position].owner != null && games[gameId].properties[player.position].owner.piece != player.piece) {
                     var rentPayable = 0;
-                    if(games[gameId].properties[player.position].type == "station") {
+                    if (games[gameId].properties[player.position].type == "station") {
                         var stationsOwnedBySameOwner = 0;
-                        for(var i = 0; i < games[gameId].properties.length; i++) {
-                            if(games[gameId].properties[i].type == "station" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) stationsOwnedBySameOwner++;
+                        for (var i = 0; i < games[gameId].properties.length; i++) {
+                            if (games[gameId].properties[i].type == "station" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) stationsOwnedBySameOwner++;
                         }
-                        rentPayable = games[gameId]["station-rents"][stationsOwnedBySameOwner-1];
+                        rentPayable = games[gameId]["station-rents"][stationsOwnedBySameOwner - 1];
                     }
-                    else if(games[gameId].properties[player.position].type == "utility") {
+                    else if (games[gameId].properties[player.position].type == "utility") {
                         var utilitiesOwnedBySameOwner = 0;
-                        for(var i = 0; i < games[gameId].properties.length; i++) {
-                            if(games[gameId].properties[i].type == "utility" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) utilitiesOwnedBySameOwner++;
+                        for (var i = 0; i < games[gameId].properties.length; i++) {
+                            if (games[gameId].properties[i].type == "utility" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) utilitiesOwnedBySameOwner++;
                         }
-                        if(utilitiesOwnedBySameOwner == 2) rentPayable = amount * 10;
+                        if (utilitiesOwnedBySameOwner == 2) rentPayable = amount * 10;
                         else rentPayable = amount * 4;
                     }
-                    else if(games[gameId].properties[player.position].type == "house") {
+                    else if (games[gameId].properties[player.position].type == "house") {
                         var housesSameColourOwnedBySameOwner = 0;
-                        for(var i = 0; i < games[gameId].properties.length; i++) {
-                            if(games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) housesSameColourOwnedBySameOwner++;
+                        for (var i = 0; i < games[gameId].properties.length; i++) {
+                            if (games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) housesSameColourOwnedBySameOwner++;
                         }
                         var propertiesInGroup = 3;
-                        if(games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
-                        
+                        if (games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
+
                         rentPayable = games[gameId].properties[player.position].rent[0]; // get base rent no houses
-                        if(propertiesInGroup == housesSameColourOwnedBySameOwner) rentPayable = rentPayable * 2; // double rent due to having no houses but full set
+                        if (propertiesInGroup == housesSameColourOwnedBySameOwner) rentPayable = rentPayable * 2; // double rent due to having no houses but full set
 
                         // it gets a bit more complicated calculating rent for houses/hotel...
                         var houses = 0;
                         var hasHotel = false;
-                        for(var i = 0; i < games[gameId].properties[player.position].addons.length; i++) {
-                            if(games[gameId].properties[player.position].addons[i] == "house") houses++;
+                        for (var i = 0; i < games[gameId].properties[player.position].addons.length; i++) {
+                            if (games[gameId].properties[player.position].addons[i] == "house") houses++;
                             else hasHotel = true;
                         }
                     }
@@ -203,12 +206,19 @@ function nextRound(gameId) {
     }
     games[gameId].currentPiece = currentPlayer.piece;
     io.to(gameId).emit("message", { type: "info", message: "It's now " + currentPlayer.piece + "'s turn!" });
+    io.to(gameId).emit("new-round", currentPlayer.piece);
 
     rollDice(gameId, function (diceA, diceB, sum) {
         io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>." });
         moveToPosition(gameId, currentPlayer, sum, function () {
-            setTimeout(function () {
-                nextRound(gameId);
+            games[gameId].nextRoundCountdown = 20;
+            var nextRoundInterval = setInterval(function () {
+                io.to(gameId).emit("round-countdown", games[gameId].nextRoundCountdown);
+                if (games[gameId].nextRoundCountdown < 1) {
+                    nextRound(gameId);
+                    clearInterval(nextRoundInterval);
+                }
+                games[gameId].nextRoundCountdown--;
             }, 1000);
         })
     })

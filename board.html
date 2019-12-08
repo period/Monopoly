@@ -262,6 +262,9 @@
             <div class="row text-center">
                 <h1>Monopoly</h1>
                 <div id="messages"></div>
+                <div class="pull-right">
+                    <button class="btn btn-primary btn-lg" id="nextround-btn">Next Round (<span id="nextround-countdown">20</span>)</button>
+                </div>
             </div>
         </div>
         <div class="container board text-center">
@@ -531,6 +534,7 @@
         var socket = io();
 
         var piece;
+        var currentPlayingPiece;
 
         socket.on("connect", function () {
             socket.emit("join-room", window.location.hash.replace("#", ""));
@@ -587,6 +591,7 @@
             if (data == 0) {
                 hasCountdown = false;
                 $("#countdown-alert").remove();
+                $("#nextround-btn").show();
             }
         })
         socket.on("move-update", function(data) {
@@ -597,6 +602,24 @@
                     var current = $(this).html();
                     $(this).html(current + "<i id=\"player-piece-" + data.player + "\" class=\"" + pieceToFa[data.player] + "\"></i>")
                 }
+            })
+        })
+        socket.on("new-round", function(data) {
+            $("#nextround-countdown").text(20);
+            currentPlayingPiece = data.toString();
+            if(data.toString() == piece) $("#nextround-btn").prop("disabled", false);
+            else $("#nextround-btn").prop("disabled", true);
+        })
+        socket.on("round-countdown", function(data) {
+            $("#nextround-countdown").text(data);
+        })
+
+        $(document).ready(function() {
+            $("#nextround-btn").hide();
+            $("#nextround-btn").on("click", function() {
+                if($(this).is(":disabled")) return;
+                if(piece == currentPlayingPiece) socket.emit("force-nextround");
+                $(this).prop("disabled", true);
             })
         })
     </script>
