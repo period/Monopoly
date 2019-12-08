@@ -62,6 +62,9 @@ io.on("connection", function (socket) {
                 }
             }, 1000);
         }
+        if(games[data].state == "Ingame") {
+            sock.emit("piece-selected", sock.piece);
+        }
     })
     socket.on("roll-dice", function () {
         rollDice(socket.gid, function () {
