@@ -255,6 +255,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="property-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Property: <span id="propertymodal-name"></span> (owned by <span id="propertymodal-owner"></span>)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="center text-center">
+                            <h3>Pricing</h3>
+                            <p>Purchase price: M<strong id="propertymodal-price"></strong></p>
+                            <p>Mortgage for: M<strong id="propertymodal-mortgagevalue"></strong></p>
+                            <hr>
+                            <h3>Rent Information</h3>
+                            <p>Rent: M<strong id="propertymodal-rent-none"></strong></p>
+                            <p>Rent (full set): M<strong id="propertymodal-rent-fullset"></strong></p>
+                            <p>Rent (1 house): M<strong id="propertymodal-rent-house1"></strong></p>
+                            <p>Rent (2 house): M<strong id="propertymodal-rent-house2"></strong></p>
+                            <p>Rent (3 house): M<strong id="propertymodal-rent-house3"></strong></p>
+                            <p>Rent (4 house): M<strong id="propertymodal-rent-house4"></strong></p>
+                            <p>Rent (hotel): M<strong id="propertymodal-rent-hotel"></strong></p>
+                            <hr>
+                            <h3>Upgrades</h3>
+                            <p>Houses cost: M<strong id="propertymodal-addon-price-house"></strong></p>
+                            <p>Hotel cost: M<strong id="propertymodal-addon-price-hotel"></strong></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary propertymodal-action" disabled id="propertymodal-action-purchase">Purchase</button>
+                        <button class="btn btn-warning propertymodal-action" disabled id="propertymodal-action-mortgage">Mortgage</button>
+                        <button class="btn btn-success propertymodal-action" disabled id="propertymodal-action-addhouse">Add House</button>
+                        <button class="btn btn-danger propertymodal-action" disabled id="propertymodal-action-addhotel">Add Hotel</button>
+                        <button class="btn btn-default propertymodal-action" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -613,6 +649,36 @@
         socket.on("round-countdown", function(data) {
             $("#nextround-countdown").text(data);
         })
+
+        var gameObj;
+        socket.on("game-update", function(data) {
+            gameObj = data;
+        })
+
+        var currentPropertyView;
+        function renderProperty(propertyName) {
+            currentPropertyView = propertyName;
+            var property;
+            for(var i = 0; i < gameObj.properties.length; i++) {
+                if(gameObj.properties[i].name == propertyName) property = gameObj.properties[i];
+            }
+            if(property == null) return console.log("Property lookup failed: " + propertyName);
+            var isManageable = (piece == currentPlayingPiece);
+            var isOwned = (property.owner == piece);
+
+            if(!isOwned || !isManageable) $(".propertymodal-action").hide();
+            else $(".propertymodal-action").show();
+
+            $("#propertymodal-rent-none").text(property.rent[0]);
+            $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
+            $("#propertymodal-rent-house1").text(property.rent[1]);
+            $("#propertymodal-rent-house2").text(property.rent[2]);
+            $("#propertymodal-rent-house3").text(property.rent[3]);
+            $("#propertymodal-rent-house4").text(property.rent[4]);
+            $("#propertymodal-rent-hotel").text(property.rent[5]);
+
+            $("#property-modal").modal("show");
+        }
 
         $(document).ready(function() {
             $("#nextround-btn").hide();

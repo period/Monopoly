@@ -26,6 +26,12 @@ app.get("/create-game", function (req, res) {
 
 })
 
+function sendGameUpdate(gameId) {
+    var tmpGame = Object.assign({}, games[gameId]);
+    tmpGame.players = null;
+    io.to(gameId).emit("game-update", tmpGame);
+}
+
 io.on("connection", function (socket) {
     socket.on("join-room", function (data) {
         data = data.toString();
@@ -33,6 +39,7 @@ io.on("connection", function (socket) {
         socket.gid = data;
         socket.join(data);
         socket.emit("message", { type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)" });
+        sendGameUpdate(data);
         if (games[data].state == "Lobby" && io.sockets.adapter.rooms[data].length == 2) {
             var countdown = 10;
             games[data].state = "Starting";
@@ -194,6 +201,7 @@ function moveToPosition(gameId, player, amount, callback) {
 function nextRound(gameId) {
     if (games[gameId] == null) return;
     if (games[gameId].players.length <= 1) return gameOver(gameId); // no players OR just one player remaining
+    sendGameUpdate(gameId);
     // First step is to find the next player!
     var currentPlayer = null;
     for (var i = 0; i < games[gameId].players.length; i++) {
