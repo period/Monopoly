@@ -85,6 +85,7 @@ io.on("connection", function (socket) {
         games[socket.gid].properties[data.position].owner = socket.piece;
         socket.emit("swal", {title: "Purchased!", message: "You now own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
         io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has purchased <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
+        sendGameUpdate(socket.gid);
     })
 });
 
@@ -198,8 +199,12 @@ function moveToPosition(gameId, player, amount, callback) {
                         if(hasHotel == true) rentPayable = games[gameId].properties[player.position].rent[5];
                         if(houses > 0) rentPayable = games[gameId].properties[player.position].rent[houses];
                     }
+                    io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> paid <strong>M" + rentPayable + "</strong> in rent to <strong>" + games[gameId].properties[player.position].owner + "</strong>." });
+                    updateBalance(gameId, player, 0-rentPayable);
+                    for(var i = 0; i < socks.length; i++) {
+                        if(socks[i].piece == games[gameId].properties[player.position].owner) updateBalance(gameId, socks[i], rentPayable);
+                    }
                 }
-                updateBalance(gameId, player, rentPayable);
             }
             callback();
         }

@@ -661,6 +661,7 @@
         var gameObj;
         socket.on("game-update", function(data) {
             gameObj = data;
+            if($("#property-modal").hasClass("in")) renderProperty($("#propertymodal-name").text());
         })
 
         var currentPropertyView;
@@ -675,6 +676,9 @@
             var isOwned = (property.owner == piece) && property.owner != null;
 
             if(property.type == "house") {
+                $("#propertymodal-name").text(property.name);
+                if(property.owner != null) $("#propertymodal-owner").text(property.owner);
+                else $("#propertymodal-owner").text("nobody");
                 $(".propertymodal-action").hide();
                 $(".propertymodal-action").attr("propertypos", property.position);
 
