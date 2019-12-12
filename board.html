@@ -667,8 +667,11 @@
             var isOwned = (property.owner == piece);
 
             if(property.type == "house") {
-                if(!isOwned || !isManageable) $(".propertymodal-action").hide();
+                if(isOwned == false || isManageable == false) $(".propertymodal-action").hide();
                 else $(".propertymodal-action").show();
+
+                $("#propertymodal-price").text(property.price);
+                $("#propertymodal-mortgagevalue").text(property.price / 2)
 
                 $("#propertymodal-rent-none").text(property.rent[0]);
                 $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
