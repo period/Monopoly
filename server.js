@@ -81,10 +81,21 @@ io.on("connection", function (socket) {
         if(socket.position != data.position) return socket.emit("swal", {title: "Incorrect position", message: "You have to be at this property to purchase it", type: "error"})
         if(games[socket.gid].properties[data.position].owner != null) return socket.emit("swal", {title: "Already owned", message: "This property has already been purchased", type: "error"})
         if(games[socket.gid].properties[data.position].price > socket.balance) return socket.emit("swal", {title: "Not enough", message: "You don't have enough balance to do this.", type: "error"});
-        updateBalance(socket.gid, socket, games[socket.gid].properties[data.position].price);
+        updateBalance(socket.gid, socket, 0-games[socket.gid].properties[data.position].price);
         games[socket.gid].properties[data.position].owner = socket.piece;
         socket.emit("swal", {title: "Purchased!", message: "You now own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
         io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has purchased <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
+        sendGameUpdate(socket.gid);
+    })
+    socket.on("mortgage-property", function(data) {
+        if(games[socket.gid].state != "Ingame") return socket.emit("swal", {title: "Not ingame", message: "The game you're in isn't ingame", type: "error"});
+        if(games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", {title: "Not owned", message: "This property is not owned by anybody", type: "error"})
+        if(games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", {title: "Not owned", message: "You don't own this property", type: "error"})
+        if(games[socket.gid].properties[data.position].hasOwnProperty("addons") && games[socket.gid].properties[data.position].addons.length > 0) return socket.emit("swal", {title: "Existing House/Hotel", message: "There's a house or hotel on this property. Sell those first!", type: "error"})
+        games[socket.gid].properties[data.position].owner = null;
+        updateBalance(socket.gid, socket, (games[socket.gid].properties[data.position].price / 2));
+        socket.emit("swal", {title: "Mortgaged!", message: "You now no longer own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has mortgaged <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
         sendGameUpdate(socket.gid);
     })
 });
