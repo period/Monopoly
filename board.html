@@ -752,6 +752,9 @@
         $("#propertymodal-action-addhouse").on("click", function () {
             socket.emit("purchase-addon-house", { position: $(this).attr("propertypos") });
         })
+        $("#propertymodal-action-addhotel").on("click", function () {
+            socket.emit("purchase-addon-hotel", { position: $(this).attr("propertypos") });
+        })
         $(document).on("click", ".property", function () {
             renderProperty($(this).children(".header").attr("property"));
         })

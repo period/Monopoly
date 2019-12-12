@@ -119,6 +119,27 @@ io.on("connection", function (socket) {
         io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has added a house to <strong>" + games[socket.gid].properties[data.position].name + "</strong>!" });
         sendGameUpdate(socket.gid);
     });
+    socket.on("purchase-addon-hotel", function (data) {
+        if (games[socket.gid].state != "Ingame") return socket.emit("swal", { title: "Not ingame", message: "The game you're in isn't ingame", type: "error" });
+        if (games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", { title: "Not owned", message: "This property is not owned by anybody", type: "error" })
+        if (games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", { title: "Not owned", message: "You don't own this property", type: "error" })
+        if (games[socket.gid].properties[data.position].hasOwnProperty("addons") == false) return socket.emit("swal", { title: "Not available", message: "Houses/hotels cannot be purchased on this type of property", type: "error" })
+        var hasHotel = false;
+        var numberOfHouses = 0;
+        for (var i = 0; i < games[socket.gid].properties[data.position].addons.length; i++) {
+            if (games[socket.gid].properties[data.position].addons[i] == "house") numberOfHouses++;
+            else hasHotel = true;
+        }
+        if (hasHotel) return socket.emit("swal", { title: "Not available", message: "You already have a hotel!", type: "error" })
+        if (numberOfHouses < 4) return socket.emit("swal", { title: "Not available", message: "Maximum houses reached. Consider buying a hotel!", type: "error" });
+
+        if (games[socket.gid].properties[data.position].pricing.hotel > socket.balance) return socket.emit("swal", { title: "Insufficient balance", message: "You don't have enough money to purchase this.", type: "error" })
+        games[socket.gid].properties[data.position].addons["hotel"]
+        updateBalance(socket.gid, socket, (games[socket.gid].properties[data.position].pricing.hotel));
+        socket.emit("swal", { title: "Purchase Successful", message: "You have purchased a hotel on " + games[socket.gid].properties[data.position].name + "!", type: "success" });
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has added a hotel to <strong>" + games[socket.gid].properties[data.position].name + "</strong>!" });
+        sendGameUpdate(socket.gid);
+    });
 });
 
 http.listen(1337, function () {
