@@ -69,35 +69,56 @@ io.on("connection", function (socket) {
                 }
             }, 1000);
         }
-        if(games[data].state == "Ingame") {
+        if (games[data].state == "Ingame") {
             socket.emit("piece-selected", socket.piece);
         }
     })
-    socket.on("force-nextround", function() {
+    socket.on("force-nextround", function () {
         games[socket.gid].nextRoundCountdown = 0;
     });
-    socket.on("purchase-property", function(data) {
-        if(games[socket.gid].state != "Ingame") return socket.emit("swal", {title: "Not ingame", message: "The game you're in isn't ingame", type: "error"});
-        if(socket.position != data.position) return socket.emit("swal", {title: "Incorrect position", message: "You have to be at this property to purchase it", type: "error"})
-        if(games[socket.gid].properties[data.position].owner != null) return socket.emit("swal", {title: "Already owned", message: "This property has already been purchased", type: "error"})
-        if(games[socket.gid].properties[data.position].price > socket.balance) return socket.emit("swal", {title: "Not enough", message: "You don't have enough balance to do this.", type: "error"});
-        updateBalance(socket.gid, socket, 0-games[socket.gid].properties[data.position].price);
+    socket.on("purchase-property", function (data) {
+        if (games[socket.gid].state != "Ingame") return socket.emit("swal", { title: "Not ingame", message: "The game you're in isn't ingame", type: "error" });
+        if (socket.position != data.position) return socket.emit("swal", { title: "Incorrect position", message: "You have to be at this property to purchase it", type: "error" })
+        if (games[socket.gid].properties[data.position].owner != null) return socket.emit("swal", { title: "Already owned", message: "This property has already been purchased", type: "error" })
+        if (games[socket.gid].properties[data.position].price > socket.balance) return socket.emit("swal", { title: "Not enough", message: "You don't have enough balance to do this.", type: "error" });
+        updateBalance(socket.gid, socket, 0 - games[socket.gid].properties[data.position].price);
         games[socket.gid].properties[data.position].owner = socket.piece;
-        socket.emit("swal", {title: "Purchased!", message: "You now own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
-        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has purchased <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
+        socket.emit("swal", { title: "Purchased!", message: "You now own " + games[socket.gid].properties[data.position].name + "!", type: "success" });
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has purchased <strong>" + games[socket.gid].properties[data.position].name + "</strong>!" });
         sendGameUpdate(socket.gid);
     })
-    socket.on("mortgage-property", function(data) {
-        if(games[socket.gid].state != "Ingame") return socket.emit("swal", {title: "Not ingame", message: "The game you're in isn't ingame", type: "error"});
-        if(games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", {title: "Not owned", message: "This property is not owned by anybody", type: "error"})
-        if(games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", {title: "Not owned", message: "You don't own this property", type: "error"})
-        if(games[socket.gid].properties[data.position].hasOwnProperty("addons") && games[socket.gid].properties[data.position].addons.length > 0) return socket.emit("swal", {title: "Existing House/Hotel", message: "There's a house or hotel on this property. Sell those first!", type: "error"})
+    socket.on("mortgage-property", function (data) {
+        if (games[socket.gid].state != "Ingame") return socket.emit("swal", { title: "Not ingame", message: "The game you're in isn't ingame", type: "error" });
+        if (games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", { title: "Not owned", message: "This property is not owned by anybody", type: "error" })
+        if (games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", { title: "Not owned", message: "You don't own this property", type: "error" })
+        if (games[socket.gid].properties[data.position].hasOwnProperty("addons") && games[socket.gid].properties[data.position].addons.length > 0) return socket.emit("swal", { title: "Existing House/Hotel", message: "There's a house or hotel on this property. Sell those first!", type: "error" })
         games[socket.gid].properties[data.position].owner = null;
         updateBalance(socket.gid, socket, (games[socket.gid].properties[data.position].price / 2));
-        socket.emit("swal", {title: "Mortgaged!", message: "You now no longer own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
-        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has mortgaged <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
+        socket.emit("swal", { title: "Mortgaged!", message: "You now no longer own " + games[socket.gid].properties[data.position].name + "!", type: "success" });
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has mortgaged <strong>" + games[socket.gid].properties[data.position].name + "</strong>!" });
         sendGameUpdate(socket.gid);
     })
+    socket.on("purchase-addon-house", function (data) {
+        if (games[socket.gid].state != "Ingame") return socket.emit("swal", { title: "Not ingame", message: "The game you're in isn't ingame", type: "error" });
+        if (games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", { title: "Not owned", message: "This property is not owned by anybody", type: "error" })
+        if (games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", { title: "Not owned", message: "You don't own this property", type: "error" })
+        if (games[socket.gid].properties[data.position].hasOwnProperty("addons") == false) return socket.emit("swal", { title: "Not available", message: "Houses/hotels cannot be purchased on this type of property", type: "error" })
+        var hasHotel = false;
+        var numberOfHouses = 0;
+        for (var i = 0; i < games[socket.gid].properties[data.position].addons.length; i++) {
+            if (games[socket.gid].properties[data.position].addons[i] == "house") numberOfHouses++;
+            else hasHotel = true;
+        }
+        if (hasHotel) return socket.emit("swal", { title: "Not available", message: "You have a hotel!", type: "error" })
+        if (numberOfHouses >= 4) return socket.emit("swal", { title: "Not available", message: "Maximum houses reached. Consider buying a hotel!", type: "error" });
+
+        if (games[socket.gid].properties[data.position].pricing.house > socket.balance) return socket.emit("swal", { title: "Insufficient balance", message: "You don't have enough money to purchase this.", type: "error" })
+        games[socket.gid].properties[data.position].addons.push("house");
+        updateBalance(socket.gid, socket, (games[socket.gid].properties[data.position].pricing.house));
+        socket.emit("swal", { title: "Purchase Successful", message: "You have purchased a house on " + games[socket.gid].properties[data.position].name + "!", type: "success" });
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has added a house to <strong>" + games[socket.gid].properties[data.position].name + "</strong>!" });
+        sendGameUpdate(socket.gid);
+    });
 });
 
 http.listen(1337, function () {
@@ -207,13 +228,13 @@ function moveToPosition(gameId, player, amount, callback) {
                             if (games[gameId].properties[player.position].addons[i] == "house") houses++;
                             else hasHotel = true;
                         }
-                        if(hasHotel == true) rentPayable = games[gameId].properties[player.position].rent[5];
-                        if(houses > 0) rentPayable = games[gameId].properties[player.position].rent[houses];
+                        if (hasHotel == true) rentPayable = games[gameId].properties[player.position].rent[5];
+                        if (houses > 0) rentPayable = games[gameId].properties[player.position].rent[houses];
                     }
                     io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> paid <strong>M" + rentPayable + "</strong> in rent to <strong>" + games[gameId].properties[player.position].owner + "</strong>." });
-                    updateBalance(gameId, player, 0-rentPayable);
-                    for(var i = 0; i < socks.length; i++) {
-                        if(socks[i].piece == games[gameId].properties[player.position].owner) updateBalance(gameId, socks[i], rentPayable);
+                    updateBalance(gameId, player, 0 - rentPayable);
+                    for (var i = 0; i < socks.length; i++) {
+                        if (socks[i].piece == games[gameId].properties[player.position].owner) updateBalance(gameId, socks[i], rentPayable);
                     }
                 }
             }
