@@ -250,7 +250,7 @@ function moveToPosition(gameId, player, amount, callback) {
             else if (games[gameId].properties[player.position].type == "free-parking") {
                 io.to(gameId).emit("message", { type: "success", message: "<strong>" + player.piece + "</strong> landed on free parking and collected M" + games[gameId]["free-parking"] + "." });
                 updateBalance(gameId, player, games[gameId]["free-parking"]);
-                updateFreeParking(gameId, 0 - amount);
+                updateFreeParking(gameId, 0 - games[gameId]["free-parking"]);
             }
             else if (games[gameId].properties[player.position].type == "tax") {
                 io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was ordered to pay <strong>" + games[gameId].properties[player.position].tax + "</strong> in tax." });
