@@ -73,11 +73,6 @@ io.on("connection", function (socket) {
             socket.emit("piece-selected", socket.piece);
         }
     })
-    socket.on("roll-dice", function () {
-        rollDice(socket.gid, function () {
-
-        });
-    })
     socket.on("force-nextround", function() {
         games[socket.gid].nextRoundCountdown = 0;
     });
