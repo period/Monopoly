@@ -298,6 +298,7 @@ function moveToPosition(gameId, player, amount, callback) {
                     }
                     io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> paid <strong>M" + rentPayable + "</strong> in rent to <strong>" + games[gameId].properties[player.position].owner + "</strong>." });
                     updateBalance(gameId, player, 0 - rentPayable);
+                    var socks = getSocketsInGame(gameId);
                     for (var i = 0; i < socks.length; i++) {
                         if (socks[i].piece == games[gameId].properties[player.position].owner) updateBalance(gameId, socks[i], rentPayable);
                     }
