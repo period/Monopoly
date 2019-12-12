@@ -663,8 +663,8 @@
                 if(gameObj.properties[i].name == propertyName) property = gameObj.properties[i];
             }
             if(property == null) return console.log("Property lookup failed: " + propertyName);
-            var isManageable = (piece == currentPlayingPiece);
-            var isOwned = (property.owner == piece);
+            var isManageable = (piece == currentPlayingPiece) && piece != null && currentPlayingPiece != null;
+            var isOwned = (property.owner == piece) && property.owner != null;
 
             if(property.type == "house") {
                 if(isOwned == false || isManageable == false) $(".propertymodal-action").hide();
