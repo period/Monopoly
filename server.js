@@ -76,6 +76,16 @@ io.on("connection", function (socket) {
     socket.on("force-nextround", function() {
         games[socket.gid].nextRoundCountdown = 0;
     });
+    socket.on("purchase-property", function(data) {
+        if(games[socket.gid].state != "Ingame") return socket.emit("swal", {title: "Not ingame", message: "The game you're in isn't ingame", type: "error"});
+        if(socket.position != data.position) return socket.emit("swal", {title: "Incorrect position", message: "You have to be at this property to purchase it", type: "error"})
+        if(games[socket.gid].properties[data.position].owner != null) return socket.emit("swal", {title: "Already owned", message: "This property has already been purchased", type: "error"})
+        if(games[socket.gid].properties[data.position].price > socket.balance) return socket.emit("swal", {title: "Not enough", message: "You don't have enough balance to do this.", type: "error"});
+        updateBalance(socket.gid, socket, games[socket.gid].properties[data.position].price);
+        games[socket.gid].properties[data.position].owner = socket.piece;
+        socket.emit("swal", {title: "Purchased!", message: "You now own " + games[socket.gid].properties[data.position].name + "!", type: "success"});
+        io.to(socket.gid).emit("message", { type: "info", message: "<strong>" + socket.piece + "</strong> has purchased <strong>" + games[socket.gid].properties[data.position].name + "</strong>!"});
+    })
 });
 
 http.listen(1337, function () {
@@ -150,19 +160,19 @@ function moveToPosition(gameId, player, amount, callback) {
                 updateFreeParking(gameId, games[gameId].properties[player.position].tax);
             }
             else if (games[gameId].properties[player.position].type == "house" || games[gameId].properties[player.position].type == "utility" || games[gameId].properties[player.position].type == "station") {
-                if (games[gameId].properties[player.position].owner != null && games[gameId].properties[player.position].owner.piece != player.piece) {
+                if (games[gameId].properties[player.position].owner != null && games[gameId].properties[player.position].owner != player.piece) {
                     var rentPayable = 0;
                     if (games[gameId].properties[player.position].type == "station") {
                         var stationsOwnedBySameOwner = 0;
                         for (var i = 0; i < games[gameId].properties.length; i++) {
-                            if (games[gameId].properties[i].type == "station" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) stationsOwnedBySameOwner++;
+                            if (games[gameId].properties[i].type == "station" && games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == games[gameId].properties[player.position].owner) stationsOwnedBySameOwner++;
                         }
                         rentPayable = games[gameId]["station-rents"][stationsOwnedBySameOwner - 1];
                     }
                     else if (games[gameId].properties[player.position].type == "utility") {
                         var utilitiesOwnedBySameOwner = 0;
                         for (var i = 0; i < games[gameId].properties.length; i++) {
-                            if (games[gameId].properties[i].type == "utility" && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) utilitiesOwnedBySameOwner++;
+                            if (games[gameId].properties[i].type == "utility" && games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == games[gameId].properties[player.position].owner) utilitiesOwnedBySameOwner++;
                         }
                         if (utilitiesOwnedBySameOwner == 2) rentPayable = amount * 10;
                         else rentPayable = amount * 4;
@@ -170,7 +180,7 @@ function moveToPosition(gameId, player, amount, callback) {
                     else if (games[gameId].properties[player.position].type == "house") {
                         var housesSameColourOwnedBySameOwner = 0;
                         for (var i = 0; i < games[gameId].properties.length; i++) {
-                            if (games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner.piece != null && games[gameId].properties[i].owner.piece == games[gameId].properties[player.position].owner.piece) housesSameColourOwnedBySameOwner++;
+                            if (games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == games[gameId].properties[player.position].owner) housesSameColourOwnedBySameOwner++;
                         }
                         var propertiesInGroup = 3;
                         if (games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
@@ -189,6 +199,7 @@ function moveToPosition(gameId, player, amount, callback) {
                         if(houses > 0) rentPayable = games[gameId].properties[player.position].rent[houses];
                     }
                 }
+                updateBalance(gameId, player, rentPayable);
             }
             callback();
         }

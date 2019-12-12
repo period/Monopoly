@@ -676,6 +676,7 @@
 
             if(property.type == "house") {
                 $(".propertymodal-action").hide();
+                $(".propertymodal-action").attr("propertypos", property.position);
 
                 if(property.owner == null && property.position == currentPosition) $("#propertymodal-action-purchase").show();
                 if(isOwned) {
@@ -708,6 +709,9 @@
                 if($(this).is(":disabled")) return;
                 if(piece == currentPlayingPiece) socket.emit("force-nextround");
                 $(this).prop("disabled", true);
+            })
+            $("#propertymodal-action-purchase").on("click", function() {
+                socket.emit("purchase-property", {position: $(this).attr("propertypos")})
             })
             $(document).on("click", ".property", function() {
                 renderProperty($(this).children(".header").attr("property"));
