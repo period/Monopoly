@@ -70,7 +70,7 @@ io.on("connection", function (socket) {
             }, 1000);
         }
         if(games[data].state == "Ingame") {
-            sock.emit("piece-selected", sock.piece);
+            socket.emit("piece-selected", socket.piece);
         }
     })
     socket.on("roll-dice", function () {
