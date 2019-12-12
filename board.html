@@ -666,18 +666,23 @@
             var isManageable = (piece == currentPlayingPiece);
             var isOwned = (property.owner == piece);
 
-            if(!isOwned || !isManageable) $(".propertymodal-action").hide();
-            else $(".propertymodal-action").show();
+            if(property.type == "home") {
+                if(!isOwned || !isManageable) $(".propertymodal-action").hide();
+                else $(".propertymodal-action").show();
 
-            $("#propertymodal-rent-none").text(property.rent[0]);
-            $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
-            $("#propertymodal-rent-house1").text(property.rent[1]);
-            $("#propertymodal-rent-house2").text(property.rent[2]);
-            $("#propertymodal-rent-house3").text(property.rent[3]);
-            $("#propertymodal-rent-house4").text(property.rent[4]);
-            $("#propertymodal-rent-hotel").text(property.rent[5]);
+                $("#propertymodal-rent-none").text(property.rent[0]);
+                $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
+                $("#propertymodal-rent-house1").text(property.rent[1]);
+                $("#propertymodal-rent-house2").text(property.rent[2]);
+                $("#propertymodal-rent-house3").text(property.rent[3]);
+                $("#propertymodal-rent-house4").text(property.rent[4]);
+                $("#propertymodal-rent-hotel").text(property.rent[5]);
 
-            $("#property-modal").modal("show");
+                $("#propertymodal-addon-price-house").text(property.pricing.house);
+                $("#propertymodal-addon-price-hotel").text(property.pricing.hotel);
+
+                $("#property-modal").modal("show");
+            }
         }
 
         $(document).ready(function() {
