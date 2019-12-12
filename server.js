@@ -186,8 +186,8 @@ io.on("connection", function (socket) {
     });
 });
 
-http.listen(1337, function () {
-    console.log("WSS server started on 1337");
+http.listen(4921, function () {
+    console.log("WSS server started on 4921");
 });
 
 function getSocketsInGame(gameId) {
