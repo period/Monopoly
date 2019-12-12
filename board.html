@@ -254,7 +254,7 @@
                             <img class="dice-number" id="dice-number-b">
                         </div>
                         <div class="col-md-2">
-                            <h2>= <strong id="dice-total">5</strong></h2>
+                            <h2>= <strong id="dice-total"></strong></h2>
                         </div>
                     </div>
                 </div>
@@ -296,6 +296,10 @@
                     <button class="btn btn-success propertymodal-action" id="propertymodal-action-addhouse">Add
                         House</button>
                     <button class="btn btn-danger propertymodal-action" id="propertymodal-action-addhotel">Add
+                        Hotel</button>
+                    <button class="btn btn-success propertymodal-action" id="propertymodal-action-sellhouse">Sell
+                        House</button>
+                    <button class="btn btn-danger propertymodal-action" id="propertymodal-action-sellhotel">Sell
                         Hotel</button>
                     <button class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
@@ -754,6 +758,12 @@
         })
         $("#propertymodal-action-addhotel").on("click", function () {
             socket.emit("purchase-addon-hotel", { position: $(this).attr("propertypos") });
+        })
+        $("#propertymodal-action-sellhouse").on("click", function () {
+            socket.emit("sell-addon-house", { position: $(this).attr("propertypos") });
+        })
+        $("#propertymodal-action-sellhotel").on("click", function () {
+            socket.emit("sell-addon-hotel", { position: $(this).attr("propertypos") });
         })
         $(document).on("click", ".property", function () {
             renderProperty($(this).children(".header").attr("property"));
