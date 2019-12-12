@@ -666,7 +666,7 @@
             var isManageable = (piece == currentPlayingPiece);
             var isOwned = (property.owner == piece);
 
-            if(property.type == "home") {
+            if(property.type == "house") {
                 if(!isOwned || !isManageable) $(".propertymodal-action").hide();
                 else $(".propertymodal-action").show();
 
