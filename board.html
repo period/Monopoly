@@ -284,11 +284,11 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary propertymodal-action" disabled id="propertymodal-action-purchase">Purchase</button>
-                        <button class="btn btn-warning propertymodal-action" disabled id="propertymodal-action-mortgage">Mortgage</button>
-                        <button class="btn btn-success propertymodal-action" disabled id="propertymodal-action-addhouse">Add House</button>
-                        <button class="btn btn-danger propertymodal-action" disabled id="propertymodal-action-addhotel">Add Hotel</button>
-                        <button class="btn btn-default propertymodal-action" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary propertymodal-action" id="propertymodal-action-purchase">Purchase</button>
+                        <button class="btn btn-warning propertymodal-action" id="propertymodal-action-mortgage">Mortgage</button>
+                        <button class="btn btn-success propertymodal-action" id="propertymodal-action-addhouse">Add House</button>
+                        <button class="btn btn-danger propertymodal-action" id="propertymodal-action-addhotel">Add Hotel</button>
+                        <button class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
 
@@ -571,6 +571,7 @@
 
         var piece;
         var currentPlayingPiece;
+        var currentPosition;
 
         socket.on("connect", function () {
             socket.emit("join-room", window.location.hash.replace("#", ""));
@@ -639,6 +640,7 @@
                     $(this).html(current + "<i id=\"player-piece-" + data.player + "\" class=\"" + pieceToFa[data.player] + "\"></i>")
                 }
             })
+            if(data.player == piece) currentPosition = data.position;
         })
         socket.on("new-round", function(data) {
             $("#nextround-countdown").text(20);
@@ -667,8 +669,14 @@
             var isOwned = (property.owner == piece) && property.owner != null;
 
             if(property.type == "house") {
-                if(isOwned == false || isManageable == false) $(".propertymodal-action").hide();
-                else $(".propertymodal-action").show();
+                $(".propertymodal-action").hide();
+
+                if(property.owner == null && property.position == currentPosition) $("#propertymodal-action-purchase").show();
+                if(isOwned) {
+                    $("#propertymodal-action-mortgage").show();
+                    $("#propertymodal-action-addhouse").show();
+                    $("#propertymodal-action-addhotel").show();
+                }
 
                 $("#propertymodal-price").text(property.price);
                 $("#propertymodal-mortgagevalue").text(property.price / 2)
@@ -694,6 +702,9 @@
                 if($(this).is(":disabled")) return;
                 if(piece == currentPlayingPiece) socket.emit("force-nextround");
                 $(this).prop("disabled", true);
+            })
+            $(document).on("click", ".property", function() {
+                renderProperty($(this).children(".header").attr("property"));
             })
         })
     </script>
