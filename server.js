@@ -190,6 +190,8 @@ function moveToPosition(gameId, player, amount, callback) {
                             if (games[gameId].properties[player.position].addons[i] == "house") houses++;
                             else hasHotel = true;
                         }
+                        if(hasHotel == true) rentPayable = games[gameId].properties[player.position].rent[5];
+                        if(houses > 0) rentPayable = games[gameId].properties[player.position].rent[houses];
                     }
                 }
             }
