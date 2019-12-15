@@ -106,11 +106,11 @@ io.on("connection", function (socket) {
         if (games[socket.gid].properties[data.position].hasOwnProperty("addons") == false) return socket.emit("swal", { title: "Not available", message: "Houses/hotels cannot be purchased on this type of property", type: "error" })
 
         var housesSameColourOwnedBySameOwner = 0;
-        for (var i = 0; i < games[gameId].properties.length; i++) {
-            if (games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == games[gameId].properties[player.position].owner) housesSameColourOwnedBySameOwner++;
+        for (var i = 0; i < games[socket.gid].properties.length; i++) {
+            if (games[socket.gid].properties[i].type == "house" && games[socket.gid].properties[i].colour == games[socket.gid].properties[player.position].colour && games[socket.gid].properties[i].owner != null && games[socket.gid].properties[i].owner == games[socket.gid].properties[player.position].owner) housesSameColourOwnedBySameOwner++;
         }
         var propertiesInGroup = 3;
-        if (games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
+        if (games[socket.gid].properties[player.position].colour == "brown" || games[socket.gid].properties[player.position].colour == "blue") propertiesInGroup = 2;
 
         if (housesSameColourOwnedBySameOwner != propertiesInGroup) return socket.emit("swal", { title: "Not available", message: "You must own the full set before you can add addons.", type: "error" })
 
