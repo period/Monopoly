@@ -332,6 +332,9 @@
             <div class="row text-center">
                 <h1>Monopoly</h1>
                 <div id="messages"></div>
+                <div class="row" id="game-playerstore">
+
+                </div>
                 <div class="pull-right">
                     <button class="btn btn-primary btn-lg" id="nextround-btn">Next Round (<span id="nextround-countdown">20</span>)</button>
                 </div>
@@ -602,7 +605,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js" integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
     <script>
-        var pieceToFa = { "Battleship": "fa fa-ship", "Car": "fa fa-car", "Bath": "fa fa-bath", "Calculator": "fa fa-calculator", "Boy": "fa fa-male", "Girl": "fa fa-female", "Motorcycle": "fa fa-motorcycle", "Timer": "fa fa-hourglass", "Wand": "fa fa-magic" }
+        var pieceToFa = { "Battleship": "fa fa-ship", "Car": "fa fa-car", "Bath": "fa fa-bath", "Calculator": "fa fa-calculator", "Motorcycle": "fa fa-motorcycle", "Wand": "fa fa-magic" }
         var socket = io();
 
         var piece;
@@ -710,6 +713,20 @@
                     }
                 })
             }
+            var playerStore = "";
+            for(var i = 0; i< gameObj.players.length; i++) {
+                playerStore += "<div class=\"col-md-2\">";
+                    playerStore += "<div class=\"panel panel-default player-panel\" player=\"" + gameObj.players[i].piece + "\">";
+                        playerStore += "<div class=\"panel-heading\"><strong><i class=\"" + pieceToFa[gameObj.players[i].piece] + "\"></i></strong> " + gameObj.players[i].piece + "</div>";
+                        playerStore += "<div class=\"panel-body\">";
+                            playerStore += "<p>Balance: M<strong>" + gameObj.players[i].balance + "</strong></p>";
+                            playerStore += "<p>Position: <strong>" + gameObj.properties[gameObj.players[i].position].name + "</strong></p>"
+                            playerStore += "<small>Click anywhere on the box for properties owned</small>";
+                        playerStore += "</div>";
+                    playerStore += "</div>";
+                playerStore += "</div>";
+            }
+            $("#game-playerstore").html(playerStore);
         })
 
         var currentPropertyView;
@@ -792,6 +809,15 @@
             })
             $(document).on("click", ".property", function () {
                 renderProperty($(this).children(".header").attr("property"));
+            })
+            $(document).on("click", ".player-panel", function () {
+                var propertyOwned = [];
+                var clickedPiece = $(this).attr("player");
+                for(var i = 0; i < gameObj.properties.length; i++) {
+                    if(gameObj.properties[i].owner != null && gameObj.properties[i].owner == clickedPiece) propertyOwned.push(gameObj.properties[i].name);
+                }
+                if(propertyOwned.length > 0) swal("Property Owned", propertyOwned.join(", "), "info");
+                else swal("No properties", "This player does not own any properties.", "error");
             })
         })
     </script>

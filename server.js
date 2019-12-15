@@ -28,7 +28,11 @@ app.get("/create-game", function (req, res) {
 
 function sendGameUpdate(gameId) {
     var tmpGame = Object.assign({}, games[gameId]);
-    tmpGame.players = null;
+    var tmpPlayers = [];
+    for(var i = 0; i < tmpGame.players.length; i++) {
+        tmpPlayers.push({piece: tmpGame.players[i].piece, balance: tmpGame.players[i].balance, position: tmpGame.players[i].position});
+    }
+    tmpGame.players = tmpPlayers;
     io.to(gameId).emit("game-update", tmpGame);
 }
 
@@ -36,12 +40,19 @@ io.on("connection", function (socket) {
     socket.on("join-room", function (data) {
         data = data.toString();
         if (games[data] == null) return socket.emit("eval", "window.location.href = \"./\"");
+        if(io.sockets.adapter.rooms[data] != null && io.sockets.adapter.rooms[data].length >= 6) {
+            socket.emit("swal", { type: "error", title: "Game is full", message: "This room is currently full."});
+            setTimeout(function() {
+                socket.emit("eval", "window.location.href = \"./\"");
+            }, 10000)
+            return;
+        }
         socket.gid = data;
         socket.join(data);
         socket.emit("message", { type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)" });
         sendGameUpdate(data);
         if (games[data].state == "Lobby" && io.sockets.adapter.rooms[data].length == 2) {
-            var countdown = 2;
+            var countdown = 30;
             games[data].state = "Starting";
             var countdownTimer = setInterval(() => {
                 io.to(data).emit("countdown", countdown);
@@ -50,7 +61,7 @@ io.on("connection", function (socket) {
                     clearInterval(countdownTimer);
                     if (io.sockets.adapter.rooms[data].length < 1) {
                         io.to(data).emit("message", { type: "warning", message: "Not enough players... (" + io.sockets.adapter.rooms[data].length + " in room)" });
-                        countdown = 15;
+                        countdown = 30;
                         games[data].state = "Lobby";
                     }
                     else {
@@ -405,6 +416,7 @@ function nextRound(gameId) {
     rollDice(gameId, function (diceA, diceB, sum) {
         io.to(gameId).emit("message", { type: "info", message: currentPlayer.piece + " rolled <strong>" + sum + "</strong>." });
         moveToPosition(gameId, currentPlayer, sum, function () {
+            sendGameUpdate(gameId);
             games[gameId].nextRoundCountdown = 20;
             var nextRoundInterval = setInterval(function () {
                 io.to(gameId).emit("round-countdown", games[gameId].nextRoundCountdown);
