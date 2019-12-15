@@ -255,7 +255,67 @@ function moveToPosition(gameId, player, amount, callback) {
                 updateBalance(gameId, player, -50);
                 updateFreeParking(gameId, 50);
             }
-            else if (games[gameId].properties[player.position].type == "free-parking") {
+            else if (games[gameId].properties[player.position].type == "chance" || games[gameId].properties[player.position].type == "community-chest") {
+                var selectedCard = games[gameId].cards[games[gameId].properties[player.position].type][Math.floor(Math.random()*games[gameId].cards[games[gameId].properties[player.position].type].length)];
+                io.to(gameId).emit("select-card", {type: games[gameId].properties[player.position].type, text: selectedCard.text})
+                if(selectedCard.type == "RECEIVE_MONEY") {
+                    updateBalance(gameId, player, selectedCard.amount);
+                }
+                else if(selectedCard.type == "GO_TO_JAIL") {
+                    player.position = 10;
+                    io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
+                    io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was sent to jail and paid M50 for release." });
+                    updateBalance(gameId, player, -50);
+                    updateFreeParking(gameId, 50);
+                }
+                else if(selectedCard.type == "MOVE_X_SPACES") {
+                    player.position -= 3;
+                    io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
+                }
+                else if(selectedCard.type == "MOVE_TO_NEAREST_STATION") {
+                    var found = false;
+                    while(found == false) {
+                        player.position++;
+                        if(games[gameId].properties[player.position].type == "station") found = true;
+                        if(player.position >= 40) {
+                            player.position = 0;
+                            // Passed go, issue 200
+                            updateBalance(gameId, player, 200);
+                        }
+                    }
+                }
+                else if(selectedCard.type == "ALL_PLAYERS_PAY_PLAYER") {
+                    var socks = getSocketsInGame(gameId);
+                    var sum = 0;
+                    for (var i = 0; i < socks.length; i++) {
+                        if (socks[i].piece != player.piece) {
+                            updateBalance(gameId, socks[i], 0-selectedCard.amount);
+                            sum++;
+                        }
+                    }
+                    updateBalance(gameId, player, sum);
+                }
+                else if(selectedCard.type == "PAY_TAX") {
+                    updateBalance(gameId, player, 0-selectedCard.amount);
+                    updateFreeParking(gameId, selectedCard.amount);
+                }
+                else if(selectedCard.type == "REPAIRS") {
+                    var repairsTotal = 0;
+                    for(var i = 0; i < games[gameId].properties.length; i++) {
+                        if(games[gameId].properties[i].owner != null && games[gameId].properties[i].addons != null && games[gameId].properties[i].owner == player.piece) {
+                            for(var u = 0; u < games[gameId].properties[i].addons.length; u++) {
+                                if(games[gameId].properties[i].addons[u] == "hotel") repairsTotal += selectedCard.hotel;
+                                if(games[gameId].properties[i].addons[u] == "house") repairsTotal += selectedCard.house;
+                            }
+                        }
+                    }
+                    updateBalance(gameId, player, 0-repairsTotal);
+                    updateFreeParking(gameId, repairsTotal);
+                }
+            }
+
+
+            if (games[gameId].properties[player.position].type == "free-parking") {
                 io.to(gameId).emit("message", { type: "success", message: "<strong>" + player.piece + "</strong> landed on free parking and collected M" + games[gameId]["free-parking"] + "." });
                 updateBalance(gameId, player, games[gameId]["free-parking"]);
                 updateFreeParking(gameId, 0 - games[gameId]["free-parking"]);
