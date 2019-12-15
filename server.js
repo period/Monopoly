@@ -59,7 +59,7 @@ io.on("connection", function (socket) {
                         for (var sock of getSocketsInGame(data)) {
                             var selectedPiece = games[data]["available-positions"].pop();
                             sock.emit("piece-selected", selectedPiece);
-                            io.to(data).emit("move-update", {player: selectedPiece, position: 0});
+                            io.to(data).emit("move-update", { player: selectedPiece, position: 0 });
                             sock.piece = selectedPiece;
                             sock.balance = 1500;
                             sock.position = 0;
@@ -104,6 +104,16 @@ io.on("connection", function (socket) {
         if (games[socket.gid].properties[data.position].owner == null) return socket.emit("swal", { title: "Not owned", message: "This property is not owned by anybody", type: "error" })
         if (games[socket.gid].properties[data.position].owner != socket.piece) return socket.emit("swal", { title: "Not owned", message: "You don't own this property", type: "error" })
         if (games[socket.gid].properties[data.position].hasOwnProperty("addons") == false) return socket.emit("swal", { title: "Not available", message: "Houses/hotels cannot be purchased on this type of property", type: "error" })
+
+        var housesSameColourOwnedBySameOwner = 0;
+        for (var i = 0; i < games[gameId].properties.length; i++) {
+            if (games[gameId].properties[i].type == "house" && games[gameId].properties[i].colour == games[gameId].properties[player.position].colour && games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == games[gameId].properties[player.position].owner) housesSameColourOwnedBySameOwner++;
+        }
+        var propertiesInGroup = 3;
+        if (games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
+
+        if(housesSameColourOwnedBySameOwner != propertiesInGroup) return socket.emit("swal", { title: "Not available", message: "You must own the full set before you can add addons.", type: "error" })
+
         var hasHotel = false;
         var numberOfHouses = 0;
         for (var i = 0; i < games[socket.gid].properties[data.position].addons.length; i++) {
