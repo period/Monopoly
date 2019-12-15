@@ -5,6 +5,146 @@
     "has-played-round": [],
     "free-parking": 0,
     "station-rents": [25, 50, 100, 200],
+    "cards": {
+        "community": [
+            {
+                "type": "PAY_TAX",
+                "text": "Pay school fees of M50",
+                "tax": 50
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "You have won second prize in a beauty contest. Collect M10",
+                "amount": 10
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Bank error in your favour. Collect M200",
+                "amount": 200
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Life insurance matures. Collect M100",
+                "amount": 100
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "From sale of stock, you get M50",
+                "amount": 50
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Income tax refund. Collect M20",
+                "amount": 20
+            },
+            {
+                "type": "ALL_PLAYERS_PAY_PLAYER",
+                "text": "It's your birthday. Collect M10 from every player",
+                "amount": 10
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Receive M25 consultancy fee",
+                "amount": 25
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "You inherit M100",
+                "amount": 100
+            },
+            {
+                "type": "GO_TO_JAIL",
+                "text": "Go to jail. Go directly to jail. Do not pass GO."
+            },
+            {
+                "type": "PAY_TAX",
+                "text": "Pay doctor's fees of M50",
+                "tax": 50
+            },
+            {
+                "type": "PAY_TAX",
+                "text": "Pay hospital fees of M50",
+                "tax": 50
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to GO",
+                "position": 0
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Holiday fund matures. Collect M100",
+                "amount": 100
+            },
+            {
+                "type": "REPAIRS",
+                "text": "You are assessed for street repairs. Each house: M40. Each hotel: M115",
+                "house": 40,
+                "hotel": 115
+            }
+        ],
+        "chance": [
+            {
+                "type": "PAY_TAX",
+                "text": "Speeding Fine M15",
+                "tax": 15
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Your building loan matures. Collect M150",
+                "amount": 150
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to GO",
+                "position": 0
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to Pall Mall",
+                "position": 11
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to Kings Cross Station",
+                "position": 5
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to Mayfair",
+                "position": 39
+            },
+            {
+                "type": "GO_TO_JAIL",
+                "text": "Go to jail. Go directly to jail. Do not pass GO."
+            },
+            {
+                "type": "MOVE_TO_POSITION",
+                "text": "Advance to Trafalgar Square",
+                "position": 24
+            },
+            {
+                "type": "MOVE_TO_NEAREST_STATION",
+                "text": "Advance to the nearest railway station"
+            },
+            {
+                "type": "MOVE_X_SPACES",
+                "text": "Go back three spaces",
+                "spaces": 3
+            },
+            {
+                "type": "REPAIRS",
+                "text": "Make general repairs on all of your property. Each house: M25. Each hotel: M100",
+                "house": 25,
+                "hotel": 100
+            },
+            {
+                "type": "RECEIVE_MONEY",
+                "text": "Bank pays you dividend of M50",
+                "amount": 50
+            }
+        ]
+    },
     "properties": [
         {
             "position": 0,
