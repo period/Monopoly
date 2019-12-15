@@ -258,6 +258,21 @@
                 </div>
             </div>
         </div>
+        <div id="card-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="cardmodal-type"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="cardmodal-text"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="property-modal" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -671,7 +686,11 @@
         socket.on("round-countdown", function (data) {
             $("#nextround-countdown").text(data);
         })
-
+        socket.on("select-card", function (data) {
+            $("#cardmodal-type").text(data.type);
+            $("#cardmodal-text").text(data.text);
+            $("#card-modal").modal("show");
+        })
         var gameObj;
         socket.on("game-update", function (data) {
             gameObj = data;
