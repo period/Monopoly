@@ -696,7 +696,7 @@
         var currentPropertyView;
         function renderProperty(propertyName) {
             currentPropertyView = propertyName;
-            var property;
+            var property = null;
             for (var i = 0; i < gameObj.properties.length; i++) {
                 if (gameObj.properties[i].name == propertyName) property = gameObj.properties[i];
             }
