@@ -600,9 +600,12 @@
             swal(data.title, data.message, data.type);
         })
 
+        var diceRolling = false;
+
         socket.on("dice-start", function () {
             // Dice has started to roll so we should open up the modal.
             $("#dice-modal").modal("show");
+            diceRolling = true;
         })
         socket.on("dice", function (data) {
             // Dice rolling
@@ -614,6 +617,7 @@
             // Dice has completed rolling
             setTimeout(function () {
                 $("#dice-modal").modal("hide");
+                diceRolling = false;
             }, 1500);
         })
         var hasCountdown = false;
@@ -724,6 +728,7 @@
             $("#nextround-btn").hide();
             $("#nextround-btn").on("click", function () {
                 if ($(this).is(":disabled")) return;
+                if(diceRolling == true) return swal("Dice rolling", "The dice is still rolling...", "error");
                 if (piece == currentPlayingPiece) socket.emit("force-nextround");
                 $(this).prop("disabled", true);
             })
