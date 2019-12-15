@@ -41,7 +41,7 @@ io.on("connection", function (socket) {
         socket.emit("message", { type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)" });
         sendGameUpdate(data);
         if (games[data].state == "Lobby" && io.sockets.adapter.rooms[data].length == 2) {
-            var countdown = 10;
+            var countdown = 2;
             games[data].state = "Starting";
             var countdownTimer = setInterval(() => {
                 io.to(data).emit("countdown", countdown);
@@ -71,7 +71,7 @@ io.on("connection", function (socket) {
             }, 1000);
         }
         if (games[data].state == "Ingame") {
-            socket.emit("piece-selected", socket.piece);
+            //socket.emit("piece-selected", socket.piece);
         }
     })
     socket.on("force-nextround", function () {

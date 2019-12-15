@@ -271,17 +271,29 @@
                             <p>Mortgage for: M<strong id="propertymodal-mortgagevalue"></strong></p>
                             <hr>
                             <h3>Rent Information</h3>
-                            <p>Rent: M<strong id="propertymodal-rent-none"></strong></p>
-                            <p>Rent (full set): M<strong id="propertymodal-rent-fullset"></strong></p>
-                            <p>Rent (1 house): M<strong id="propertymodal-rent-house1"></strong></p>
-                            <p>Rent (2 house): M<strong id="propertymodal-rent-house2"></strong></p>
-                            <p>Rent (3 house): M<strong id="propertymodal-rent-house3"></strong></p>
-                            <p>Rent (4 house): M<strong id="propertymodal-rent-house4"></strong></p>
-                            <p>Rent (hotel): M<strong id="propertymodal-rent-hotel"></strong></p>
-                            <hr>
-                            <h3>Upgrades</h3>
-                            <p>Houses cost: M<strong id="propertymodal-addon-price-house"></strong></p>
-                            <p>Hotel cost: M<strong id="propertymodal-addon-price-hotel"></strong></p>
+                            <div id="propertymodal-houseinfo" class="propertymodal-rentinfo">
+                                <p>Rent: M<strong id="propertymodal-rent-none"></strong></p>
+                                <p>Rent (full set): M<strong id="propertymodal-rent-fullset"></strong></p>
+                                <p>Rent (1 house): M<strong id="propertymodal-rent-house1"></strong></p>
+                                <p>Rent (2 house): M<strong id="propertymodal-rent-house2"></strong></p>
+                                <p>Rent (3 house): M<strong id="propertymodal-rent-house3"></strong></p>
+                                <p>Rent (4 house): M<strong id="propertymodal-rent-house4"></strong></p>
+                                <p>Rent (hotel): M<strong id="propertymodal-rent-hotel"></strong></p>
+                                <hr>
+                                <h3>Upgrades</h3>
+                                <p>Houses cost: M<strong id="propertymodal-addon-price-house"></strong></p>
+                                <p>Hotel cost: M<strong id="propertymodal-addon-price-hotel"></strong></p>
+                            </div>
+                            <div id="propertymodal-utilityinfo" class="propertymodal-rentinfo">
+                                <p>If one utility is owned, rent is 4 times the amount shown on the dice.</p>
+                                <p>If both utilities are owned, rent is 10 times the amount shown on the dice.</p>
+                            </div>
+                            <div id="propertymodal-stationinfo" class="propertymodal-rentinfo">
+                                <p>Rent: M<strong>25</strong></p>
+                                <p>Rent (2 stations): M<strong>50</strong></p>
+                                <p>Rent (3 stations): M<strong>100</strong></p>
+                                <p>Rent (4 stations): M<strong>200</strong></p>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -289,11 +301,11 @@
                         <button class="btn btn-warning propertymodal-action" id="propertymodal-action-mortgage">Mortgage</button>
                         <button class="btn btn-success propertymodal-action" id="propertymodal-action-addhouse">Add
                             House</button>
-                        <button class="btn btn-danger propertymodal-action" id="propertymodal-action-addhotel">Add
+                        <button class="btn btn-danger propertymodal-action propertymodal-addonaction" id="propertymodal-action-addhotel">Add
                             Hotel</button>
-                        <button class="btn btn-success propertymodal-action" id="propertymodal-action-sellhouse">Sell
+                        <button class="btn btn-success propertymodal-action propertymodal-addonaction" id="propertymodal-action-sellhouse">Sell
                             House</button>
-                        <button class="btn btn-danger propertymodal-action" id="propertymodal-action-sellhotel">Sell
+                        <button class="btn btn-danger propertymodal-action propertymodal-addonaction" id="propertymodal-action-sellhotel">Sell
                             Hotel</button>
                         <button class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
@@ -340,7 +352,7 @@
                     <div class="player-item-store" position=24></div>
                 </div>
                 <div class="property">
-                    <div class="header top station"></div>
+                    <div class="header top station" property="Fenchurch St. Station"></div>
                     <p class="title">Fenchurch St. Station</p>
                     <p class="price">M200</p>
                     <div class="player-item-store" position=25></div>
@@ -358,7 +370,7 @@
                     <div class="player-item-store" position=27></div>
                 </div>
                 <div class="property">
-                    <div class="header top water-works"></div>
+                    <div class="header top water-works" property="Water Works"></div>
                     <p class="title">Water Works</p>
                     <p class="price">M150</p>
                     <div class="player-item-store" position=28></div>
@@ -407,7 +419,7 @@
                         </div>
                     </div>
                     <div class="property rotate-180">
-                        <div class="header header-left station"></div>
+                        <div class="header header-left station" property="Marylebone Station"></div>
                         <div class="rotate-180">
                             <p class="title">Marylebone Station</p>
                             <p class="price">M200</p>
@@ -431,7 +443,7 @@
                         </div>
                     </div>
                     <div class="property rotate-180">
-                        <div class="header header-left electricity-company"></div>
+                        <div class="header header-left electricity-company" property="Electricity Company"></div>
                         <div class="rotate-180">
                             <p class="title">Electricity Company</p>
                             <p class="price">M150</p>
@@ -475,7 +487,7 @@
                         <div class="player-item-store" position=34></div>
                     </div>
                     <div class="property">
-                        <div class="header header-right station"></div>
+                        <div class="header header-right station" property="Liverpool St. Station"></div>
                         <p class="title">Liverpool St. Station</p>
                         <p class="price">M200</p>
                         <div class="player-item-store" position=35></div>
@@ -534,7 +546,7 @@
                     <div class="player-item-store" position=6></div>
                 </div>
                 <div class="property">
-                    <div class="header top station"></div>
+                    <div class="header top station" property="Kings Cross Station"></div>
                     <p class="title">Kings Cross Station</p>
                     <p class="price">M200</p>
                     <div class="player-item-store" position=5></div>
@@ -692,12 +704,17 @@
             var isManageable = (piece == currentPlayingPiece) && piece != null && currentPlayingPiece != null;
             var isOwned = (property.owner == piece) && property.owner != null;
 
+            $("#propertymodal-price").text(property.price);
+            $("#propertymodal-mortgagevalue").text(property.price / 2)
+            $("#propertymodal-name").text(property.name);
+            if (property.owner != null) $("#propertymodal-owner").text(property.owner);
+            else $("#propertymodal-owner").text("nobody");
+            $(".propertymodal-action").hide();
+            $(".propertymodal-action").attr("propertypos", property.position);
+            $(".propertymodal-rentinfo").hide();
+
             if (property.type == "house") {
-                $("#propertymodal-name").text(property.name);
-                if (property.owner != null) $("#propertymodal-owner").text(property.owner);
-                else $("#propertymodal-owner").text("nobody");
-                $(".propertymodal-action").hide();
-                $(".propertymodal-action").attr("propertypos", property.position);
+                $("#propertymodal-houseinfo").show();
 
                 if (property.owner == null && property.position == currentPosition && isManageable == true) $("#propertymodal-action-purchase").show();
                 if (isOwned) {
@@ -705,9 +722,6 @@
                     $("#propertymodal-action-addhouse").show();
                     $("#propertymodal-action-addhotel").show();
                 }
-
-                $("#propertymodal-price").text(property.price);
-                $("#propertymodal-mortgagevalue").text(property.price / 2)
 
                 $("#propertymodal-rent-none").text(property.rent[0]);
                 $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
@@ -719,16 +733,23 @@
 
                 $("#propertymodal-addon-price-house").text(property.pricing.house);
                 $("#propertymodal-addon-price-hotel").text(property.pricing.hotel);
-
-                $("#property-modal").modal("show");
             }
+            else {
+                if (property.type == "utility") $("#propertymodal-utilityinfo").show();
+                if (property.type == "station") $("#propertymodal-stationinfo").show();
+                if (property.owner == null && property.position == currentPosition && isManageable == true) $("#propertymodal-action-purchase").show();
+                if (isOwned) {
+                    $("#propertymodal-action-mortgage").show();
+                }
+            }
+            $("#property-modal").modal("show");
         }
 
         $(document).ready(function () {
             $("#nextround-btn").hide();
             $("#nextround-btn").on("click", function () {
                 if ($(this).is(":disabled")) return;
-                if(diceRolling == true) return swal("Dice rolling", "The dice is still rolling...", "error");
+                if (diceRolling == true) return swal("Dice rolling", "The dice is still rolling...", "error");
                 if (piece == currentPlayingPiece) socket.emit("force-nextround");
                 $(this).prop("disabled", true);
             })
