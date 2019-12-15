@@ -59,6 +59,7 @@ io.on("connection", function (socket) {
                         for (var sock of getSocketsInGame(data)) {
                             var selectedPiece = games[data]["available-positions"].pop();
                             sock.emit("piece-selected", selectedPiece);
+                            io.to(data).emit("move-update", {player: selectedPiece, position: 0});
                             sock.piece = selectedPiece;
                             sock.balance = 1500;
                             sock.position = 0;
