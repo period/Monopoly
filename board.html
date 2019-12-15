@@ -1,773 +1,754 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Monopoly - Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"
-        integrity="sha256-iXUYfkbVl5itd4bAkFH5mjMEN5ld9t3OHvXX3IU8UxU=" crossorigin="anonymous" />
-    <style>
-        .red {
-            background-color: red
-        }
+    <head>
+        <title>Monopoly - Game</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" integrity="sha256-iXUYfkbVl5itd4bAkFH5mjMEN5ld9t3OHvXX3IU8UxU=" crossorigin="anonymous" />
+        <style>
+            .red {
+                background-color: red
+            }
 
-        .yellow {
-            background-color: #ff0
-        }
+            .yellow {
+                background-color: #ff0
+            }
 
-        .brown {
-            background-color: #8b4513
-        }
+            .brown {
+                background-color: #8b4513
+            }
 
-        .light-blue {
-            background-color: #87ceeb
-        }
+            .light-blue {
+                background-color: #87ceeb
+            }
 
-        .pink {
-            background-color: #9932cc
-        }
+            .pink {
+                background-color: #9932cc
+            }
 
-        .orange {
-            background-color: orange
-        }
+            .orange {
+                background-color: orange
+            }
 
-        .green {
-            background-color: green
-        }
+            .green {
+                background-color: green
+            }
 
-        .station {
-            background-color: black;
-        }
+            .station {
+                background-color: black;
+            }
 
-        .community-chest {
-            background-color: cyan;
-        }
+            .community-chest {
+                background-color: cyan;
+            }
 
-        .chance {
-            background-color: darkorange;
-        }
+            .chance {
+                background-color: darkorange;
+            }
 
-        .blue {
-            background-color: #00f
-        }
+            .blue {
+                background-color: #00f
+            }
 
-        .board {
-            background-color: #bfdbae;
-            height: 75vw;
-            width: 75vw;
-        }
+            .board {
+                background-color: #bfdbae;
+                height: 75vw;
+                width: 75vw;
+            }
 
-        div {
-            box-sizing: border-box;
-        }
+            div {
+                box-sizing: border-box;
+            }
 
-        .header {
-            height: 15%
-        }
+            .header {
+                height: 15%
+            }
 
-        .header-left {
-            width: 15%
-        }
+            .header-left {
+                width: 15%
+            }
 
-        .header>.top {
-            bottom: 1px;
-            left: 1px;
-            right: 1px
-        }
+            .header>.top {
+                bottom: 1px;
+                left: 1px;
+                right: 1px
+            }
 
-        .header-left {
-            top: 1px;
-            left: 1px;
-            right: 1px
-        }
+            .header-left {
+                top: 1px;
+                left: 1px;
+                right: 1px
+            }
 
-        .header-right {
-            top: 1px;
-            left: 1px;
-            right: 1px
-        }
+            .header-right {
+                top: 1px;
+                left: 1px;
+                right: 1px
+            }
 
-        .left-strip>.property {
-            width: 100%;
-            height: 8.4%;
-            flex-grow: 1;
-            position: relative;
-            outline: 1px solid black;
-        }
+            .left-strip>.property {
+                width: 100%;
+                height: 8.4%;
+                flex-grow: 1;
+                position: relative;
+                outline: 1px solid black;
+            }
 
-        .right-strip>.property {
-            width: 100%;
-            flex-grow: 1;
-            position: relative;
-            outline: 1px solid black;
-        }
+            .right-strip>.property {
+                width: 100%;
+                flex-grow: 1;
+                position: relative;
+                outline: 1px solid black;
+            }
 
-        /* .left-strip,
+            /* .left-strip,
             .right-strip,*/
-        .top-strip {
-            width: 10%;
-            display: flex;
-            left: 1px;
-            right: 1px;
-            bottom: 30%;
-            height: 100%
-        }
+            .top-strip {
+                width: 10%;
+                display: flex;
+                left: 1px;
+                right: 1px;
+                bottom: 30%;
+                height: 100%
+            }
 
-        .left-strip,
-        .right-strip {
-            flex-grow: 2;
-            outline: 1px solid black;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+            .left-strip,
+            .right-strip {
+                flex-grow: 2;
+                outline: 1px solid black;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
 
-        .inner-card {
-            position: absolute;
-            width: 15%;
-            height: 10%;
-        }
+            .inner-card {
+                position: absolute;
+                width: 15%;
+                height: 10%;
+            }
 
-        .card-community {
-            background-color: lightblue;
-        }
+            .card-community {
+                background-color: lightblue;
+            }
 
-        .card-chance {
-            background-color: orangered;
-        }
+            .card-chance {
+                background-color: orangered;
+            }
 
-        .logo-outer {
-            width: 46%;
-            background-color: red;
-            text-align: center;
-            position: absolute;
-            color: white;
-            display: flex;
-            font-size: 7.5vw;
-        }
+            .logo-outer {
+                width: 46%;
+                background-color: red;
+                text-align: center;
+                position: absolute;
+                color: white;
+                display: flex;
+                font-size: 7.5vw;
+            }
 
-        .top-strip {
-            width: 21%
-        }
+            .top-strip {
+                width: 21%
+            }
 
-        .top-strip {
-            width: 100%;
-            height: 10%
-        }
+            .top-strip {
+                width: 100%;
+                height: 10%
+            }
 
-        .property {
-            outline: 1px solid #000;
-            flex-grow: 1;
-            position: relative
-        }
+            .property {
+                outline: 1px solid #000;
+                flex-grow: 1;
+                position: relative
+            }
 
-        .top-strip>.property {
-            width: 8.4%
-        }
+            .top-strip>.property {
+                width: 8.4%
+            }
 
-        .header-left {
-            height: 100%;
-            width: 21%;
-            position: absolute;
-            outline: 2px solid black;
-            top: 1px;
-            bottom: 1px;
-            right: 1px;
-        }
+            .header-left {
+                height: 100%;
+                width: 21%;
+                position: absolute;
+                outline: 2px solid black;
+                top: 1px;
+                bottom: 1px;
+                right: 1px;
+            }
 
-        .header-right {
-            height: 100%;
-            width: 21%;
-            position: absolute;
-            outline: 2px solid black;
-            top: 1px;
-            bottom: 1px;
-            left: 1px;
-        }
+            .header-right {
+                height: 100%;
+                width: 21%;
+                position: absolute;
+                outline: 2px solid black;
+                top: 1px;
+                bottom: 1px;
+                left: 1px;
+            }
 
-        .corner,
-        .inner-board {
-            flex-grow: 9;
-            width: 58%;
-            outline: 1px solid #000
-        }
+            .corner,
+            .inner-board {
+                flex-grow: 9;
+                width: 58%;
+                outline: 1px solid #000
+            }
 
-        .inner-board {
-            flex-grow: 9;
-        }
+            .inner-board {
+                flex-grow: 9;
+            }
 
-        .corner {
-            flex-grow: 2;
-            display: flex;
-            width: 12%;
-            flex-direction: column;
-            position: relative
-        }
+            .corner {
+                flex-grow: 2;
+                display: flex;
+                width: 12%;
+                flex-direction: column;
+                position: relative
+            }
 
-        .side-strip {
-            display: flex;
-            height: 70%;
-            width: 100%;
-        }
+            .side-strip {
+                display: flex;
+                height: 70%;
+                width: 100%;
+            }
 
-        .rotate-90 {
-            transform: rotate(90deg);
-        }
+            .rotate-90 {
+                transform: rotate(90deg);
+            }
 
-        .rotate-180 {
-            transform: rotate(180deg);
-        }
+            .rotate-180 {
+                transform: rotate(180deg);
+            }
 
-        .rotate-270 {
-            transform: rotate(270deg);
-        }
+            .rotate-270 {
+                transform: rotate(270deg);
+            }
 
-        /* Dice icons taken from game-icons.net */
-        .dice-number {
-            outline: 5px solid black;
-            height: 5vw;
-            width: 5vw;
-            background-size: 100% 100%;
-        }
-    </style>
-</head>
+            /* Dice icons taken from game-icons.net */
+            .dice-number {
+                outline: 5px solid black;
+                height: 5vw;
+                width: 5vw;
+                background-size: 100% 100%;
+            }
+        </style>
+    </head>
 
-<body>
-    <div id="dice-modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Dice rolling......</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row center text-center">
-                        <div class="col-md-4">
-                            <img class="dice-number" id="dice-number-a">
-                        </div>
-                        <div class="col-md-2">
-                            <h2>+</h2>
-                        </div>
-                        <div class="col-md-4">
-                            <img class="dice-number" id="dice-number-b">
-                        </div>
-                        <div class="col-md-2">
-                            <h2>= <strong id="dice-total"></strong></h2>
+    <body>
+        <div id="dice-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Dice rolling......</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row center text-center">
+                            <div class="col-md-4">
+                                <img class="dice-number" id="dice-number-a">
+                            </div>
+                            <div class="col-md-2">
+                                <h2>+</h2>
+                            </div>
+                            <div class="col-md-4">
+                                <img class="dice-number" id="dice-number-b">
+                            </div>
+                            <div class="col-md-2">
+                                <h2>= <strong id="dice-total"></strong></h2>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="property-modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Property: <span id="propertymodal-name"></span> (owned by <span
-                            id="propertymodal-owner"></span>)</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="center text-center">
-                        <h3>Pricing</h3>
-                        <p>Purchase price: M<strong id="propertymodal-price"></strong></p>
-                        <p>Mortgage for: M<strong id="propertymodal-mortgagevalue"></strong></p>
-                        <hr>
-                        <h3>Rent Information</h3>
-                        <p>Rent: M<strong id="propertymodal-rent-none"></strong></p>
-                        <p>Rent (full set): M<strong id="propertymodal-rent-fullset"></strong></p>
-                        <p>Rent (1 house): M<strong id="propertymodal-rent-house1"></strong></p>
-                        <p>Rent (2 house): M<strong id="propertymodal-rent-house2"></strong></p>
-                        <p>Rent (3 house): M<strong id="propertymodal-rent-house3"></strong></p>
-                        <p>Rent (4 house): M<strong id="propertymodal-rent-house4"></strong></p>
-                        <p>Rent (hotel): M<strong id="propertymodal-rent-hotel"></strong></p>
-                        <hr>
-                        <h3>Upgrades</h3>
-                        <p>Houses cost: M<strong id="propertymodal-addon-price-house"></strong></p>
-                        <p>Hotel cost: M<strong id="propertymodal-addon-price-hotel"></strong></p>
+        <div id="property-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Property: <span id="propertymodal-name"></span> (owned by <span id="propertymodal-owner"></span>)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="center text-center">
+                            <h3>Pricing</h3>
+                            <p>Purchase price: M<strong id="propertymodal-price"></strong></p>
+                            <p>Mortgage for: M<strong id="propertymodal-mortgagevalue"></strong></p>
+                            <hr>
+                            <h3>Rent Information</h3>
+                            <p>Rent: M<strong id="propertymodal-rent-none"></strong></p>
+                            <p>Rent (full set): M<strong id="propertymodal-rent-fullset"></strong></p>
+                            <p>Rent (1 house): M<strong id="propertymodal-rent-house1"></strong></p>
+                            <p>Rent (2 house): M<strong id="propertymodal-rent-house2"></strong></p>
+                            <p>Rent (3 house): M<strong id="propertymodal-rent-house3"></strong></p>
+                            <p>Rent (4 house): M<strong id="propertymodal-rent-house4"></strong></p>
+                            <p>Rent (hotel): M<strong id="propertymodal-rent-hotel"></strong></p>
+                            <hr>
+                            <h3>Upgrades</h3>
+                            <p>Houses cost: M<strong id="propertymodal-addon-price-house"></strong></p>
+                            <p>Hotel cost: M<strong id="propertymodal-addon-price-hotel"></strong></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary propertymodal-action" id="propertymodal-action-purchase">Purchase</button>
+                        <button class="btn btn-warning propertymodal-action" id="propertymodal-action-mortgage">Mortgage</button>
+                        <button class="btn btn-success propertymodal-action" id="propertymodal-action-addhouse">Add
+                            House</button>
+                        <button class="btn btn-danger propertymodal-action" id="propertymodal-action-addhotel">Add
+                            Hotel</button>
+                        <button class="btn btn-success propertymodal-action" id="propertymodal-action-sellhouse">Sell
+                            House</button>
+                        <button class="btn btn-danger propertymodal-action" id="propertymodal-action-sellhotel">Sell
+                            Hotel</button>
+                        <button class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary propertymodal-action"
-                        id="propertymodal-action-purchase">Purchase</button>
-                    <button class="btn btn-warning propertymodal-action"
-                        id="propertymodal-action-mortgage">Mortgage</button>
-                    <button class="btn btn-success propertymodal-action" id="propertymodal-action-addhouse">Add
-                        House</button>
-                    <button class="btn btn-danger propertymodal-action" id="propertymodal-action-addhotel">Add
-                        Hotel</button>
-                    <button class="btn btn-success propertymodal-action" id="propertymodal-action-sellhouse">Sell
-                        House</button>
-                    <button class="btn btn-danger propertymodal-action" id="propertymodal-action-sellhotel">Sell
-                        Hotel</button>
-                    <button class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
 
-        </div>
-    </div>
-    <div class="container">
-        <div class="row text-center">
-            <h1>Monopoly</h1>
-            <div id="messages"></div>
-            <div class="pull-right">
-                <button class="btn btn-primary btn-lg" id="nextround-btn">Next Round (<span
-                        id="nextround-countdown">20</span>)</button>
             </div>
         </div>
-    </div>
-    <div class="container board text-center">
-        <div class="top-strip">
-            <div class="corner">
-                <p>Free Parking</p>
-                <div class="player-item-store" position=20></div>
-            </div>
-            <div class="property">
-                <div class="header top red" property="Strand"></div>
-                <p class="title">Strand</p>
-                <p class="price">M220</p>
-                <div class="player-item-store" position=21></div>
-            </div>
-            <div class="property">
-                <div class="header top chance"></div>
-                <p class="title">Chance</p>
-                <div class="player-item-store" position=22></div>
-            </div>
-            <div class="property">
-                <div class="header top red" property="Fleet Street"></div>
-                <p class="title">Fleet Street</p>
-                <p class="price">M220</p>
-                <div class="player-item-store" position=23></div>
-            </div>
-            <div class="property">
-                <div class="header top red" property="Trafalgar Square"></div>
-                <p class="title">Trafalgar Square</p>
-                <p class="price">M240</p>
-                <div class="player-item-store" position=24></div>
-            </div>
-            <div class="property">
-                <div class="header top station"></div>
-                <p class="title">Fenchurch St. Station</p>
-                <p class="price">M200</p>
-                <div class="player-item-store" position=25></div>
-            </div>
-            <div class="property">
-                <div class="header top yellow" property="Leicester Square"></div>
-                <p class="title">Leicester Square</p>
-                <p class="price">M260</p>
-                <div class="player-item-store" position=26></div>
-            </div>
-            <div class="property">
-                <div class="header top yellow" property="Coventry Street"></div>
-                <p class="title">Coventry Street</p>
-                <p class="price">M260</p>
-                <div class="player-item-store" position=27></div>
-            </div>
-            <div class="property">
-                <div class="header top water-works"></div>
-                <p class="title">Water Works</p>
-                <p class="price">M150</p>
-                <div class="player-item-store" position=28></div>
-            </div>
-            <div class="property">
-                <div class="header top yellow" property="Piccadilly"></div>
-                <p class="title">Piccadilly</p>
-                <p class="price">M280</p>
-                <div class="player-item-store" position=29></div>
-            </div>
-            <div class="corner">
-                <p>Go to Jail</p>
+        <div class="container">
+            <div class="row text-center">
+                <h1>Monopoly</h1>
+                <div id="messages"></div>
+                <div class="pull-right">
+                    <button class="btn btn-primary btn-lg" id="nextround-btn">Next Round (<span id="nextround-countdown">20</span>)</button>
+                </div>
             </div>
         </div>
-        <div class="side-strip">
-            <div class="left-strip">
-                <div class="property rotate-180">
-                    <div class="header header-left orange" property="Vine Street"></div>
-                    <div class="rotate-180">
-                        <p class="title">Vine Street</p>
-                        <p class="price">M200</p>
-                        <div class="player-item-store" position=19></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left orange" property="Marlborough Street"></div>
-                    <div class="rotate-180">
-                        <p class="title">Marlborough Street</p>
-                        <p class="price">M180</p>
-                        <div class="player-item-store" position=18></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left community-chest"></div>
-                    <div class="rotate-180">
-                        <p class="title">Community Chest</p>
-                        <div class="player-item-store" position=17></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left orange" property="Bow Street"></div>
-                    <div class="rotate-180">
-                        <p class="title">Bow Street</p>
-                        <p class="price">M180</p>
-                        <div class="player-item-store" position=16></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left station"></div>
-                    <div class="rotate-180">
-                        <p class="title">Marylebone Station</p>
-                        <p class="price">M200</p>
-                        <div class="player-item-store" position=15></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left pink" property="Northumberland Avenue"></div>
-                    <div class="rotate-180">
-                        <p class="title">Northumberland Avenue</p>
-                        <p class="price">M160</p>
-                        <div class="player-item-store" position=14></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left pink" property="Whitehall"></div>
-                    <div class="rotate-180">
-                        <p class="title">Whitehall</p>
-                        <p class="price">M140</p>
-                        <div class="player-item-store" position=13></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left electricity-company"></div>
-                    <div class="rotate-180">
-                        <p class="title">Electricity Company</p>
-                        <p class="price">M150</p>
-                        <div class="player-item-store" position=12></div>
-                    </div>
-                </div>
-                <div class="property rotate-180">
-                    <div class="header header-left pink" property="Pall Mall"></div>
-                    <div class="rotate-180">
-                        <p class="title">Pall Mall</p>
-                        <p class="price">M140</p>
-                        <div class="player-item-store" position=11></div>
-                    </div>
-                </div>
-            </div>
-            <div class="inner-board text-center center">
-                <!-- <div class="logo-outer">MONOPOLY</div> -->
-            </div>
-            <div class="right-strip">
-                <div class="property">
-                    <div class="header header-right green" property="Regent Street"></div>
-                    <p class="title">Regent Street</p>
-                    <p class="price">M300</p>
-                    <div class="player-item-store" position=31></div>
+        <div class="container board text-center">
+            <div class="top-strip">
+                <div class="corner">
+                    <p>Free Parking</p>
+                    <div class="player-item-store" position=20></div>
                 </div>
                 <div class="property">
-                    <div class="header header-right green" property="Oxford Street"></div>
-                    <p class="title">Oxford Street</p>
-                    <p class="price">M300</p>
-                    <div class="player-item-store" position=32></div>
+                    <div class="header top red" property="Strand"></div>
+                    <p class="title">Strand</p>
+                    <p class="price">M220</p>
+                    <div class="player-item-store" position=21></div>
                 </div>
                 <div class="property">
-                    <div class="header header-right community-chest"></div>
-                    <p class="title">Community Chest</p>
-                    <div class="player-item-store" position=33></div>
-                </div>
-                <div class="property">
-                    <div class="header header-right green" property="Bond Street"></div>
-                    <p class="title">Bond Street</p>
-                    <p class="price">M320</p>
-                    <div class="player-item-store" position=34></div>
-                </div>
-                <div class="property">
-                    <div class="header header-right station"></div>
-                    <p class="title">Liverpool St. Station</p>
-                    <p class="price">M200</p>
-                    <div class="player-item-store" position=35></div>
-                </div>
-                <div class="property">
-                    <div class="header header-right chance"></div>
+                    <div class="header top chance"></div>
                     <p class="title">Chance</p>
-                    <div class="player-item-store" position=36></div>
+                    <div class="player-item-store" position=22></div>
                 </div>
                 <div class="property">
-                    <div class="header header-right blue" property="Park Lane"></div>
-                    <p class="title">Park Lane</p>
-                    <p class="price">M350</p>
-                    <div class="player-item-store" position=37></div>
+                    <div class="header top red" property="Fleet Street"></div>
+                    <p class="title">Fleet Street</p>
+                    <p class="price">M220</p>
+                    <div class="player-item-store" position=23></div>
                 </div>
                 <div class="property">
-                    <div class="header header-right super-tax"></div>
-                    <p class="title">Super Tax</p>
+                    <div class="header top red" property="Trafalgar Square"></div>
+                    <p class="title">Trafalgar Square</p>
+                    <p class="price">M240</p>
+                    <div class="player-item-store" position=24></div>
+                </div>
+                <div class="property">
+                    <div class="header top station"></div>
+                    <p class="title">Fenchurch St. Station</p>
+                    <p class="price">M200</p>
+                    <div class="player-item-store" position=25></div>
+                </div>
+                <div class="property">
+                    <div class="header top yellow" property="Leicester Square"></div>
+                    <p class="title">Leicester Square</p>
+                    <p class="price">M260</p>
+                    <div class="player-item-store" position=26></div>
+                </div>
+                <div class="property">
+                    <div class="header top yellow" property="Coventry Street"></div>
+                    <p class="title">Coventry Street</p>
+                    <p class="price">M260</p>
+                    <div class="player-item-store" position=27></div>
+                </div>
+                <div class="property">
+                    <div class="header top water-works"></div>
+                    <p class="title">Water Works</p>
+                    <p class="price">M150</p>
+                    <div class="player-item-store" position=28></div>
+                </div>
+                <div class="property">
+                    <div class="header top yellow" property="Piccadilly"></div>
+                    <p class="title">Piccadilly</p>
+                    <p class="price">M280</p>
+                    <div class="player-item-store" position=29></div>
+                </div>
+                <div class="corner">
+                    <p>Go to Jail</p>
+                </div>
+            </div>
+            <div class="side-strip">
+                <div class="left-strip">
+                    <div class="property rotate-180">
+                        <div class="header header-left orange" property="Vine Street"></div>
+                        <div class="rotate-180">
+                            <p class="title">Vine Street</p>
+                            <p class="price">M200</p>
+                            <div class="player-item-store" position=19></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left orange" property="Marlborough Street"></div>
+                        <div class="rotate-180">
+                            <p class="title">Marlborough Street</p>
+                            <p class="price">M180</p>
+                            <div class="player-item-store" position=18></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left community-chest"></div>
+                        <div class="rotate-180">
+                            <p class="title">Community Chest</p>
+                            <div class="player-item-store" position=17></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left orange" property="Bow Street"></div>
+                        <div class="rotate-180">
+                            <p class="title">Bow Street</p>
+                            <p class="price">M180</p>
+                            <div class="player-item-store" position=16></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left station"></div>
+                        <div class="rotate-180">
+                            <p class="title">Marylebone Station</p>
+                            <p class="price">M200</p>
+                            <div class="player-item-store" position=15></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left pink" property="Northumberland Avenue"></div>
+                        <div class="rotate-180">
+                            <p class="title">Northumberland Avenue</p>
+                            <p class="price">M160</p>
+                            <div class="player-item-store" position=14></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left pink" property="Whitehall"></div>
+                        <div class="rotate-180">
+                            <p class="title">Whitehall</p>
+                            <p class="price">M140</p>
+                            <div class="player-item-store" position=13></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left electricity-company"></div>
+                        <div class="rotate-180">
+                            <p class="title">Electricity Company</p>
+                            <p class="price">M150</p>
+                            <div class="player-item-store" position=12></div>
+                        </div>
+                    </div>
+                    <div class="property rotate-180">
+                        <div class="header header-left pink" property="Pall Mall"></div>
+                        <div class="rotate-180">
+                            <p class="title">Pall Mall</p>
+                            <p class="price">M140</p>
+                            <div class="player-item-store" position=11></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner-board text-center center">
+                    <!-- <div class="logo-outer">MONOPOLY</div> -->
+                </div>
+                <div class="right-strip">
+                    <div class="property">
+                        <div class="header header-right green" property="Regent Street"></div>
+                        <p class="title">Regent Street</p>
+                        <p class="price">M300</p>
+                        <div class="player-item-store" position=31></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right green" property="Oxford Street"></div>
+                        <p class="title">Oxford Street</p>
+                        <p class="price">M300</p>
+                        <div class="player-item-store" position=32></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right community-chest"></div>
+                        <p class="title">Community Chest</p>
+                        <div class="player-item-store" position=33></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right green" property="Bond Street"></div>
+                        <p class="title">Bond Street</p>
+                        <p class="price">M320</p>
+                        <div class="player-item-store" position=34></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right station"></div>
+                        <p class="title">Liverpool St. Station</p>
+                        <p class="price">M200</p>
+                        <div class="player-item-store" position=35></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right chance"></div>
+                        <p class="title">Chance</p>
+                        <div class="player-item-store" position=36></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right blue" property="Park Lane"></div>
+                        <p class="title">Park Lane</p>
+                        <p class="price">M350</p>
+                        <div class="player-item-store" position=37></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right super-tax"></div>
+                        <p class="title">Super Tax</p>
+                        <p class="price">M100</p>
+                        <div class="player-item-store" position=38></div>
+                    </div>
+                    <div class="property">
+                        <div class="header header-right blue" property="Mayfair"></div>
+                        <p class="title">Mayfair</p>
+                        <p class="price">M400</p>
+                        <div class="player-item-store" position=39></div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-strip bottom-strip">
+                <div class="corner">
+                    <p>Jail</p>
+                    <div class="player-item-store" position=10></div>
+                </div>
+                <div class="property">
+                    <div class="header top light-blue" property="Pentonville Road"></div>
+                    <p class="title">Pentonville Road</p>
+                    <p class="price">M120</p>
+                    <div class="player-item-store" position=9></div>
+                </div>
+                <div class="property">
+                    <div class="header top light-blue" property="Euston Road"></div>
+                    <p class="title">Euston Road</p>
                     <p class="price">M100</p>
-                    <div class="player-item-store" position=38></div>
+                    <div class="player-item-store" position=8></div>
                 </div>
                 <div class="property">
-                    <div class="header header-right blue" property="Mayfair"></div>
-                    <p class="title">Mayfair</p>
-                    <p class="price">M400</p>
-                    <div class="player-item-store" position=39></div>
+                    <div class="header top chance"></div>
+                    <p class="title">Chance</p>
+                    <div class="player-item-store" position=7></div>
+                </div>
+                <div class="property">
+                    <div class="header top light-blue" property="The Angel, Islington"></div>
+                    <p class="title">The Angel, Islington</p>
+                    <p class="price">M100</p>
+                    <div class="player-item-store" position=6></div>
+                </div>
+                <div class="property">
+                    <div class="header top station"></div>
+                    <p class="title">Kings Cross Station</p>
+                    <p class="price">M200</p>
+                    <div class="player-item-store" position=5></div>
+                </div>
+                <div class="property">
+                    <div class="header top income-tax"></div>
+                    <p class="title">Income Tax</p>
+                    <p class="price">M200</p>
+                    <div class="player-item-store" position=4></div>
+                </div>
+                <div class="property">
+                    <div class="header top brown" property="Whitechapel Road"></div>
+                    <p class="title">Whitechapel Road</p>
+                    <p class="price">M60</p>
+                    <div class="player-item-store" position=3></div>
+                </div>
+                <div class="property">
+                    <div class="header top community-chest"></div>
+                    <p class="title">Community Chest</p>
+                    <div class="player-item-store" position=2></div>
+                </div>
+                <div class="property">
+                    <div class="header top brown" property="Old Kent Road"></div>
+                    <p class="title">Old Kent Road</p>
+                    <p class="price">M60</p>
+                    <div class="player-item-store" position=1></div>
+                </div>
+                <div class="corner">
+                    <p>GO</p>
+                    <div class="player-item-store" position=0></div>
                 </div>
             </div>
         </div>
-        <div class="top-strip bottom-strip">
-            <div class="corner">
-                <p>Jail</p>
-                <div class="player-item-store" position=10></div>
-            </div>
-            <div class="property">
-                <div class="header top light-blue" property="Pentonville Road"></div>
-                <p class="title">Pentonville Road</p>
-                <p class="price">M120</p>
-                <div class="player-item-store" position=9></div>
-            </div>
-            <div class="property">
-                <div class="header top light-blue" property="Euston Road"></div>
-                <p class="title">Euston Road</p>
-                <p class="price">M100</p>
-                <div class="player-item-store" position=8></div>
-            </div>
-            <div class="property">
-                <div class="header top chance"></div>
-                <p class="title">Chance</p>
-                <div class="player-item-store" position=7></div>
-            </div>
-            <div class="property">
-                <div class="header top light-blue" property="The Angel, Islington"></div>
-                <p class="title">The Angel, Islington</p>
-                <p class="price">M100</p>
-                <div class="player-item-store" position=6></div>
-            </div>
-            <div class="property">
-                <div class="header top station"></div>
-                <p class="title">Kings Cross Station</p>
-                <p class="price">M200</p>
-                <div class="player-item-store" position=5></div>
-            </div>
-            <div class="property">
-                <div class="header top income-tax"></div>
-                <p class="title">Income Tax</p>
-                <p class="price">M200</p>
-                <div class="player-item-store" position=4></div>
-            </div>
-            <div class="property">
-                <div class="header top brown" property="Whitechapel Road"></div>
-                <p class="title">Whitechapel Road</p>
-                <p class="price">M60</p>
-                <div class="player-item-store" position=3></div>
-            </div>
-            <div class="property">
-                <div class="header top community-chest"></div>
-                <p class="title">Community Chest</p>
-                <div class="player-item-store" position=2></div>
-            </div>
-            <div class="property">
-                <div class="header top brown" property="Old Kent Road"></div>
-                <p class="title">Old Kent Road</p>
-                <p class="price">M60</p>
-                <div class="player-item-store" position=1></div>
-            </div>
-            <div class="corner">
-                <p>GO</p>
-                <div class="player-item-store" position=0></div>
-            </div>
-        </div>
-    </div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"
-    integrity="sha256-0YA7ixx4+I4GrLichcjWSQHIUSQiI8ojTDqsK7AZ5zU=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
-    integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"
-    integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
-<script>
-    var pieceToFa = { "Battleship": "fa fa-ship", "Car": "fa fa-car", "Bath": "fa fa-bath", "Calculator": "fa fa-calculator", "Boy": "fa fa-male", "Girl": "fa fa-female", "Motorcycle": "fa fa-motorcycle", "Timer": "fa fa-hourglass", "Wand": "fa fa-magic"}
-    var socket = io();
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js" integrity="sha256-0YA7ixx4+I4GrLichcjWSQHIUSQiI8ojTDqsK7AZ5zU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js" integrity="sha256-egVvxkq6UBCQyKzRBrDHu8miZ5FOaVrjSqQqauKglKc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" integrity="sha256-LlN0a0J3hMkDLO1mhcMwy+GIMbIRV7kvKHx4oCxNoxI=" crossorigin="anonymous"></script>
+    <script>
+        var pieceToFa = { "Battleship": "fa fa-ship", "Car": "fa fa-car", "Bath": "fa fa-bath", "Calculator": "fa fa-calculator", "Boy": "fa fa-male", "Girl": "fa fa-female", "Motorcycle": "fa fa-motorcycle", "Timer": "fa fa-hourglass", "Wand": "fa fa-magic" }
+        var socket = io();
 
-    var piece;
-    var currentPlayingPiece;
-    var currentPosition;
+        var piece;
+        var currentPlayingPiece;
+        var currentPosition;
 
-    socket.on("connect", function () {
-        socket.emit("join-room", window.location.hash.replace("#", ""));
-    })
-    socket.on("eval", function (data) {
-        eval(data.toString());
-    })
+        socket.on("connect", function () {
+            socket.emit("join-room", window.location.hash.replace("#", ""));
+        })
+        socket.on("eval", function (data) {
+            eval(data.toString());
+        })
 
-    socket.on("piece-selected", function (data) {
-        data = data.toString();
-        piece = data;
-        var current = $("#messages").html();
-        $("#messages").html(current + "<div class=\"alert alert-info\">You are <strong>" + piece + "</strong>.</div>");
-    })
-
-    socket.on("swal", function (data) {
-        swal(data.title, data.message, data.type);
-    })
-
-    socket.on("dice-start", function () {
-        // Dice has started to roll so we should open up the modal.
-        $("#dice-modal").modal("show");
-    })
-    socket.on("dice", function (data) {
-        // Dice rolling
-        $("#dice-total").text(data.a + data.b)
-        $("#dice-number-a").prop("src", "dice/" + data.a + ".png");
-        $("#dice-number-b").prop("src", "dice/" + data.b + ".png");
-    })
-    socket.on("dice-stop", function () {
-        // Dice has completed rolling
-        setTimeout(function () {
-            $("#dice-modal").modal("hide");
-        }, 1500);
-    })
-    var hasCountdown = false;
-    socket.on("message", function (data) {
-        // messaging system
-        var current = $("#messages").html();
-        var messageId = "message_" + Math.random().toString(36).substring(7);
-        $("#messages").html(current + "<div class=\"alert alert-" + data.type + "\" id=\"" + messageId + "\">" + data.message + "</div>");
-        setTimeout(() => {
-            $("#" + messageId).fadeOut(1500);
-        }, 5000);
-        setTimeout(() => {
-            $("#" + messageId).remove();
-        }, 7500);
-    })
-    socket.on("countdown", function (data) {
-        // countdown for game start
-        if (hasCountdown == false) {
+        socket.on("piece-selected", function (data) {
+            data = data.toString();
+            piece = data;
             var current = $("#messages").html();
-            $("#messages").html(current + "<div class=\"alert alert-info\" id=\"countdown-alert\">The game is starting in <span id=\"countdown-seconds\">" + data + "</span> seconds</div>");
-            hasCountdown = true;
-        }
-        else $("#countdown-seconds").text(data);
+            $("#messages").html(current + "<div class=\"alert alert-info\">You are <strong>" + piece + "</strong>.</div>");
+        })
 
-        if (data == 0) {
-            hasCountdown = false;
-            $("#countdown-alert").remove();
-            $("#nextround-btn").show();
-        }
-    })
-    socket.on("move-update", function (data) {
-        $("#player-piece-" + data.player).remove();
-        $(".player-item-store").each(function () {
-            var positionOfProp = $(this).attr("position");
-            if (positionOfProp == data.position) {
-                var current = $(this).html();
-                $(this).html(current + "<i id=\"player-piece-" + data.player + "\" class=\"" + pieceToFa[data.player] + "\"></i>")
+        socket.on("swal", function (data) {
+            swal(data.title, data.message, data.type);
+        })
+
+        socket.on("dice-start", function () {
+            // Dice has started to roll so we should open up the modal.
+            $("#dice-modal").modal("show");
+        })
+        socket.on("dice", function (data) {
+            // Dice rolling
+            $("#dice-total").text(data.a + data.b)
+            $("#dice-number-a").prop("src", "dice/" + data.a + ".png");
+            $("#dice-number-b").prop("src", "dice/" + data.b + ".png");
+        })
+        socket.on("dice-stop", function () {
+            // Dice has completed rolling
+            setTimeout(function () {
+                $("#dice-modal").modal("hide");
+            }, 1500);
+        })
+        var hasCountdown = false;
+        socket.on("message", function (data) {
+            $.notify({ message: data.message }, { element: "body", type: data.type, placement: { from: "bottom", align: "right" } })
+        })
+        socket.on("countdown", function (data) {
+            // countdown for game start
+            if (hasCountdown == false) {
+                var current = $("#messages").html();
+                $("#messages").html(current + "<div class=\"alert alert-info\" id=\"countdown-alert\">The game is starting in <span id=\"countdown-seconds\">" + data + "</span> seconds</div>");
+                hasCountdown = true;
+            }
+            else $("#countdown-seconds").text(data);
+
+            if (data == 0) {
+                hasCountdown = false;
+                $("#countdown-alert").remove();
+                $("#nextround-btn").show();
             }
         })
-        if (data.player == piece) currentPosition = data.position;
-    })
-    socket.on("new-round", function (data) {
-        $("#nextround-countdown").text(20);
-        currentPlayingPiece = data.toString();
-        if (data.toString() == piece) $("#nextround-btn").prop("disabled", false);
-        else $("#nextround-btn").prop("disabled", true);
-    })
-    socket.on("round-countdown", function (data) {
-        $("#nextround-countdown").text(data);
-    })
-
-    var gameObj;
-    socket.on("game-update", function (data) {
-        gameObj = data;
-        if ($("#property-modal").hasClass("in")) renderProperty($("#propertymodal-name").text());
-        for (var i = 0; i < gameObj.properties.length; i++) {
-            if (gameObj.properties[i].addons != null && gameObj.properties[i].addons.length > 0) calculateProperty(i);
-        }
-        function calculateProperty(i) {
-            $(".header").each(function () {
-                if ($(this).attr("property") == gameObj.properties[i].name) {
-                    var calculatedText = "";
-                    for (var u = 0; u < gameObj.properties[i].addons.length; u++) {
-                        if (gameObj.properties[i].addons[u] == "house") calculatedText += "<i class=\"fa fa-home\"></i>";
-                        else calculatedText += "<i class=\"fa fa-hotel\"></i>";
-                    }
-                    $(this).html(calculatedText);
+        socket.on("move-update", function (data) {
+            $("#player-piece-" + data.player).remove();
+            $(".player-item-store").each(function () {
+                var positionOfProp = $(this).attr("position");
+                if (positionOfProp == data.position) {
+                    var current = $(this).html();
+                    $(this).html(current + "<i id=\"player-piece-" + data.player + "\" class=\"" + pieceToFa[data.player] + "\"></i>")
                 }
             })
-        }
-    })
+            if (data.player == piece) currentPosition = data.position;
+        })
+        socket.on("new-round", function (data) {
+            $("#nextround-countdown").text(20);
+            currentPlayingPiece = data.toString();
+            if (data.toString() == piece) $("#nextround-btn").prop("disabled", false);
+            else $("#nextround-btn").prop("disabled", true);
+        })
+        socket.on("round-countdown", function (data) {
+            $("#nextround-countdown").text(data);
+        })
 
-    var currentPropertyView;
-    function renderProperty(propertyName) {
-        currentPropertyView = propertyName;
-        var property;
-        for (var i = 0; i < gameObj.properties.length; i++) {
-            if (gameObj.properties[i].name == propertyName) property = gameObj.properties[i];
-        }
-        if (property == null) return console.log("Property lookup failed: " + propertyName);
-        var isManageable = (piece == currentPlayingPiece) && piece != null && currentPlayingPiece != null;
-        var isOwned = (property.owner == piece) && property.owner != null;
-
-        if (property.type == "house") {
-            $("#propertymodal-name").text(property.name);
-            if (property.owner != null) $("#propertymodal-owner").text(property.owner);
-            else $("#propertymodal-owner").text("nobody");
-            $(".propertymodal-action").hide();
-            $(".propertymodal-action").attr("propertypos", property.position);
-
-            if (property.owner == null && property.position == currentPosition && isManageable == true) $("#propertymodal-action-purchase").show();
-            if (isOwned) {
-                $("#propertymodal-action-mortgage").show();
-                $("#propertymodal-action-addhouse").show();
-                $("#propertymodal-action-addhotel").show();
+        var gameObj;
+        socket.on("game-update", function (data) {
+            gameObj = data;
+            if ($("#property-modal").hasClass("in")) renderProperty($("#propertymodal-name").text());
+            for (var i = 0; i < gameObj.properties.length; i++) {
+                if (gameObj.properties[i].addons != null && gameObj.properties[i].addons.length > 0) calculateProperty(i);
             }
+            function calculateProperty(i) {
+                $(".header").each(function () {
+                    if ($(this).attr("property") == gameObj.properties[i].name) {
+                        var calculatedText = "";
+                        for (var u = 0; u < gameObj.properties[i].addons.length; u++) {
+                            if (gameObj.properties[i].addons[u] == "house") calculatedText += "<i class=\"fa fa-home\"></i>";
+                            else calculatedText += "<i class=\"fa fa-hotel\"></i>";
+                        }
+                        $(this).html(calculatedText);
+                    }
+                })
+            }
+        })
 
-            $("#propertymodal-price").text(property.price);
-            $("#propertymodal-mortgagevalue").text(property.price / 2)
+        var currentPropertyView;
+        function renderProperty(propertyName) {
+            currentPropertyView = propertyName;
+            var property;
+            for (var i = 0; i < gameObj.properties.length; i++) {
+                if (gameObj.properties[i].name == propertyName) property = gameObj.properties[i];
+            }
+            if (property == null) return console.log("Property lookup failed: " + propertyName);
+            var isManageable = (piece == currentPlayingPiece) && piece != null && currentPlayingPiece != null;
+            var isOwned = (property.owner == piece) && property.owner != null;
 
-            $("#propertymodal-rent-none").text(property.rent[0]);
-            $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
-            $("#propertymodal-rent-house1").text(property.rent[1]);
-            $("#propertymodal-rent-house2").text(property.rent[2]);
-            $("#propertymodal-rent-house3").text(property.rent[3]);
-            $("#propertymodal-rent-house4").text(property.rent[4]);
-            $("#propertymodal-rent-hotel").text(property.rent[5]);
+            if (property.type == "house") {
+                $("#propertymodal-name").text(property.name);
+                if (property.owner != null) $("#propertymodal-owner").text(property.owner);
+                else $("#propertymodal-owner").text("nobody");
+                $(".propertymodal-action").hide();
+                $(".propertymodal-action").attr("propertypos", property.position);
 
-            $("#propertymodal-addon-price-house").text(property.pricing.house);
-            $("#propertymodal-addon-price-hotel").text(property.pricing.hotel);
+                if (property.owner == null && property.position == currentPosition && isManageable == true) $("#propertymodal-action-purchase").show();
+                if (isOwned) {
+                    $("#propertymodal-action-mortgage").show();
+                    $("#propertymodal-action-addhouse").show();
+                    $("#propertymodal-action-addhotel").show();
+                }
 
-            $("#property-modal").modal("show");
+                $("#propertymodal-price").text(property.price);
+                $("#propertymodal-mortgagevalue").text(property.price / 2)
+
+                $("#propertymodal-rent-none").text(property.rent[0]);
+                $("#propertymodal-rent-fullset").text(property.rent[0] * 2);
+                $("#propertymodal-rent-house1").text(property.rent[1]);
+                $("#propertymodal-rent-house2").text(property.rent[2]);
+                $("#propertymodal-rent-house3").text(property.rent[3]);
+                $("#propertymodal-rent-house4").text(property.rent[4]);
+                $("#propertymodal-rent-hotel").text(property.rent[5]);
+
+                $("#propertymodal-addon-price-house").text(property.pricing.house);
+                $("#propertymodal-addon-price-hotel").text(property.pricing.hotel);
+
+                $("#property-modal").modal("show");
+            }
         }
-    }
 
-    $(document).ready(function () {
-        $("#nextround-btn").hide();
-        $("#nextround-btn").on("click", function () {
-            if ($(this).is(":disabled")) return;
-            if (piece == currentPlayingPiece) socket.emit("force-nextround");
-            $(this).prop("disabled", true);
+        $(document).ready(function () {
+            $("#nextround-btn").hide();
+            $("#nextround-btn").on("click", function () {
+                if ($(this).is(":disabled")) return;
+                if (piece == currentPlayingPiece) socket.emit("force-nextround");
+                $(this).prop("disabled", true);
+            })
+            $("#propertymodal-action-purchase").on("click", function () {
+                socket.emit("purchase-property", { position: $(this).attr("propertypos") })
+            })
+            $("#propertymodal-action-mortgage").on("click", function () {
+                socket.emit("mortgage-property", { position: $(this).attr("propertypos") })
+            })
+            $("#propertymodal-action-addhouse").on("click", function () {
+                socket.emit("purchase-addon-house", { position: $(this).attr("propertypos") });
+            })
+            $("#propertymodal-action-addhotel").on("click", function () {
+                socket.emit("purchase-addon-hotel", { position: $(this).attr("propertypos") });
+            })
+            $("#propertymodal-action-sellhouse").on("click", function () {
+                socket.emit("sell-addon-house", { position: $(this).attr("propertypos") });
+            })
+            $("#propertymodal-action-sellhotel").on("click", function () {
+                socket.emit("sell-addon-hotel", { position: $(this).attr("propertypos") });
+            })
+            $(document).on("click", ".property", function () {
+                renderProperty($(this).children(".header").attr("property"));
+            })
         })
-        $("#propertymodal-action-purchase").on("click", function () {
-            socket.emit("purchase-property", { position: $(this).attr("propertypos") })
-        })
-        $("#propertymodal-action-mortgage").on("click", function () {
-            socket.emit("mortgage-property", { position: $(this).attr("propertypos") })
-        })
-        $("#propertymodal-action-addhouse").on("click", function () {
-            socket.emit("purchase-addon-house", { position: $(this).attr("propertypos") });
-        })
-        $("#propertymodal-action-addhotel").on("click", function () {
-            socket.emit("purchase-addon-hotel", { position: $(this).attr("propertypos") });
-        })
-        $("#propertymodal-action-sellhouse").on("click", function () {
-            socket.emit("sell-addon-house", { position: $(this).attr("propertypos") });
-        })
-        $("#propertymodal-action-sellhotel").on("click", function () {
-            socket.emit("sell-addon-hotel", { position: $(this).attr("propertypos") });
-        })
-        $(document).on("click", ".property", function () {
-            renderProperty($(this).children(".header").attr("property"));
-        })
-    })
-</script>
+    </script>
 
 </html>

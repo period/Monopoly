@@ -112,7 +112,7 @@ io.on("connection", function (socket) {
         var propertiesInGroup = 3;
         if (games[gameId].properties[player.position].colour == "brown" || games[gameId].properties[player.position].colour == "blue") propertiesInGroup = 2;
 
-        if(housesSameColourOwnedBySameOwner != propertiesInGroup) return socket.emit("swal", { title: "Not available", message: "You must own the full set before you can add addons.", type: "error" })
+        if (housesSameColourOwnedBySameOwner != propertiesInGroup) return socket.emit("swal", { title: "Not available", message: "You must own the full set before you can add addons.", type: "error" })
 
         var hasHotel = false;
         var numberOfHouses = 0;
