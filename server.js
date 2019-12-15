@@ -107,10 +107,10 @@ io.on("connection", function (socket) {
 
         var housesSameColourOwnedBySameOwner = 0;
         for (var i = 0; i < games[socket.gid].properties.length; i++) {
-            if (games[socket.gid].properties[i].type == "house" && games[socket.gid].properties[i].colour == games[socket.gid].properties[player.position].colour && games[socket.gid].properties[i].owner != null && games[socket.gid].properties[i].owner == games[socket.gid].properties[player.position].owner) housesSameColourOwnedBySameOwner++;
+            if (games[socket.gid].properties[i].type == "house" && games[socket.gid].properties[i].colour == games[socket.gid].properties[data.position].colour && games[socket.gid].properties[i].owner != null && games[socket.gid].properties[i].owner == games[socket.gid].properties[data.position].owner) housesSameColourOwnedBySameOwner++;
         }
         var propertiesInGroup = 3;
-        if (games[socket.gid].properties[player.position].colour == "brown" || games[socket.gid].properties[player.position].colour == "blue") propertiesInGroup = 2;
+        if (games[socket.gid].properties[data.position].colour == "brown" || games[socket.gid].properties[data.position].colour == "blue") propertiesInGroup = 2;
 
         if (housesSameColourOwnedBySameOwner != propertiesInGroup) return socket.emit("swal", { title: "Not available", message: "You must own the full set before you can add addons.", type: "error" })
 
