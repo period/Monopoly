@@ -685,7 +685,6 @@
         function calculateProperty(i) {
             $(".header").each(function () {
                 if ($(this).attr("property") == gameObj.properties[i].name) {
-                    console.log("Match found!");
                     var calculatedText = "";
                     for (var u = 0; u < gameObj.properties[i].addons.length; u++) {
                         if (gameObj.properties[i].addons[u] == "house") calculatedText += "<i class=\"fa fa-home\"></i>";
