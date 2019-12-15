@@ -272,6 +272,10 @@ function moveToPosition(gameId, player, amount, callback) {
                     player.position -= 3;
                     io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
                 }
+                else if(selectedCard.type == "MOVE_TO_POSITION") {
+                    player.position = selectedCard.position;
+                    io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
+                }
                 else if(selectedCard.type == "MOVE_TO_NEAREST_STATION") {
                     var found = false;
                     while(found == false) {
@@ -296,8 +300,8 @@ function moveToPosition(gameId, player, amount, callback) {
                     updateBalance(gameId, player, sum);
                 }
                 else if(selectedCard.type == "PAY_TAX") {
-                    updateBalance(gameId, player, 0-selectedCard.amount);
-                    updateFreeParking(gameId, selectedCard.amount);
+                    updateBalance(gameId, player, 0-selectedCard.tax);
+                    updateFreeParking(gameId, selectedCard.tax);
                 }
                 else if(selectedCard.type == "REPAIRS") {
                     var repairsTotal = 0;

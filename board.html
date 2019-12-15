@@ -687,7 +687,7 @@
             $("#nextround-countdown").text(data);
         })
         socket.on("select-card", function (data) {
-            $("#cardmodal-type").text(data.type);
+            $("#cardmodal-type").text(data.type.toUpperCase().replace("-", ""));
             $("#cardmodal-text").text(data.text);
             $("#card-modal").modal("show");
         })
