@@ -226,9 +226,6 @@ function rollDice(gameId, callback) {
         }
     }, 100);
 }
-function executePosition(gameId, player, callback) {
-    callback();
-}
 function updateFreeParking(gameId, amount) {
     games[gameId]["free-parking"] += amount;
     io.to(gameId).emit("free-parking", games[gameId]["free-parking"]);
