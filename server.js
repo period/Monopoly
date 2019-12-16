@@ -16,8 +16,6 @@ app.get("/board", function (req, res) {
 })
 app.use(express.static("public"));
 
-games["test"] = JSON.parse(fs.readFileSync("base-game.json"));
-
 app.get("/create-game", function (req, res) {
     var gameId = Math.random().toString(36).substring(8); // game ids are random 4char strings
     games[gameId] = JSON.parse(fs.readFileSync("base-game.json"));

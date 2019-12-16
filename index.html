@@ -27,7 +27,7 @@
         $(document).ready(function() {
             $("#create-room").on("click", function() {
                 $.get("/create-game", function(data) {
-                    window.location.href = "https://monopoly.thomas.gg/board#" + JSON.parse(data).game;
+                    window.location.href = "https://monopoly.thomas.gg/board#" + data.game;
                 })
             })
         })
