@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Monopoly</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="text-center">
+                <h1>Monopoly</h1>
+                <p>A text adventure which stretches the definition of text adventure. Multiplayer as standard.</p>
+                <hr>
+                <h3>Hints & Tricks</h3>
+                <ul>
+                    <li>Click on a property on the board for additional information about that property and access to purchase etc.</li>
+                    <li>Full set of properties is required to add houses, etc.</li>
+                    <li>Click 'Next Round' once you've finished with your turn in order to speed the game up.</li>
+                </ul>
+                <h3>Create a room</h3>
+                <p>Click the button below to create a game and then share the link with up to 5 other people.</p>
+                <button class="btn btn-primary btn-lg" id="create-room">Create Room</button>
+            </div>
+        </div>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $("#create-room").on("click", function() {
+                $.get("/create-game", function(data) {
+                    window.location.href = "https://monopoly.thomas.gg/board#" + JSON.parse(data).game;
+                })
+            })
+        })
+    </script>
+</html>

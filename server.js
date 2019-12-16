@@ -47,6 +47,13 @@ io.on("connection", function (socket) {
             }, 10000)
             return;
         }
+        if(socket.gid != null) {
+            socket.emit("swal", { type: "error", title: "Can't join game", message: "It would appear you are already in an active game."});
+            setTimeout(function() {
+                socket.emit("eval", "window.location.href = \"./\"");
+            }, 10000)
+            return;
+        }
         socket.gid = data;
         socket.join(data);
         socket.emit("message", { type: "success", message: "Successfully joined game (" + io.sockets.adapter.rooms[data].length + " in room)" });
@@ -85,6 +92,11 @@ io.on("connection", function (socket) {
             //socket.emit("piece-selected", socket.piece);
         }
     })
+
+    socket.on("disconnect", function() {
+        if(socket.gid != null && socket.piece != null) updateBalance(socket.gid, socket, -1);
+    })
+
     socket.on("force-nextround", function () {
         games[socket.gid].nextRoundCountdown = 0;
     });
@@ -245,6 +257,19 @@ function updateFreeParking(gameId, amount) {
 function updateBalance(gameId, player, amount) {
     player.balance += amount;
     io.to(gameId).emit("balance-update", { player: player.piece, balance: player.balance });
+    if(player.balance < amount) {
+        io.to(gameId).emit("message", {type: "danger", message: "<strong>" + player.piece + "</strong> has gone bankrupt. They are now out of the game. All properties owned by them are now un-owned."});
+        for(var i = 0; i < games[gameId].properties.length; i++) {
+            if(games[gameId].properties[i].owner != null && games[gameId].properties[i].owner == player.piece) {
+                games[gameId].properties[i].owner = null;
+                if(games[gameId].properties[i].hasOwnProperty("addons")) games[gameId].properties[i].addons = [];
+            }
+        }
+        player.balance = 0;
+        player.piece = null;
+        player.position = 0;
+        player.gid = null;
+    }
 }
 function moveToPosition(gameId, player, amount, callback) {
     var toGo = amount;
@@ -399,6 +424,7 @@ function nextRound(gameId) {
     // First step is to find the next player!
     var currentPlayer = null;
     for (var i = 0; i < games[gameId].players.length; i++) {
+        if(games[gameId].players[i].gid == null || games[gameId].players[i].hasOwnProperty("gid")) continue; // skip over bankrupt people
         if (games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
             currentPlayer = games[gameId].players[i];
             games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
