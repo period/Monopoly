@@ -263,6 +263,9 @@ function updateBalance(gameId, player, amount) {
                 if(games[gameId].properties[i].hasOwnProperty("addons")) games[gameId].properties[i].addons = [];
             }
         }
+        for(var i = 0; i < games[gameId].players.length; i++) {
+            if(games[gameId].players[i].piece == player.piece) games[gameId].players.splice(i, 1);
+        }
         player.balance = 0;
         player.piece = null;
         player.position = 0;
