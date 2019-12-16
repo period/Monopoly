@@ -422,7 +422,7 @@ function nextRound(gameId) {
     // First step is to find the next player!
     var currentPlayer = null;
     for (var i = 0; i < games[gameId].players.length; i++) {
-        if(games[gameId].players[i].gid == null || games[gameId].players[i].hasOwnProperty("gid")) continue; // skip over bankrupt people
+        if(games[gameId].players[i].gid == null || games[gameId].players[i].hasOwnProperty("gid") == false) continue; // skip over bankrupt people
         if (games[gameId]["has-played-round"].includes(games[gameId].players[i].piece) == false) {
             currentPlayer = games[gameId].players[i];
             games[gameId]["has-played-round"].push(games[gameId].players[i].piece);
