@@ -635,6 +635,7 @@
         socket.on("dice-start", function () {
             // Dice has started to roll so we should open up the modal.
             $("#dice-modal").modal("show");
+            $("#card-modal").modal("hide");
             diceRolling = true;
         })
         socket.on("dice", function (data) {
