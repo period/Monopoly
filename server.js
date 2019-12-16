@@ -462,7 +462,7 @@ function nextRound(gameId) {
     })
 }
 function gameOver(gameId) {
-    socket.emit("swal", { type: "success", title: "Game Over", message: "There are no players left to compete!"});
+    io.to(gameId).emit("swal", { type: "success", title: "Game Over", message: "There are no players left to compete!"});
     setTimeout(function () {
         io.to(gameId).emit("eval", "window.location.href = \"./\"");
         games[gameId] = null;
