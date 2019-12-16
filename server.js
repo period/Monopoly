@@ -92,7 +92,7 @@ io.on("connection", function (socket) {
     })
 
     socket.on("disconnect", function() {
-        if(socket.gid != null && socket.piece != null) updateBalance(socket.gid, socket, -1);
+        if(socket.gid != null && socket.piece != null) updateBalance(socket.gid, socket, -99999);
     })
 
     socket.on("force-nextround", function () {
