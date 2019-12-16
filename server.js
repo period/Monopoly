@@ -253,6 +253,7 @@ function updateFreeParking(gameId, amount) {
     io.to(gameId).emit("message", { type: "info", message: "Free Parking updated! There's now M" + games[gameId]["free-parking"] + " up for grabs." });
 }
 function updateBalance(gameId, player, amount) {
+    if(games[gameId] == null) return;
     player.balance += amount;
     io.to(gameId).emit("balance-update", { player: player.piece, balance: player.balance });
     if(player.balance < 0) {
