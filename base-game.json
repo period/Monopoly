@@ -266,7 +266,7 @@
             "position": 14,
             "type": "house",
             "colour": "pink",
-            "name": "Northumberland",
+            "name": "Northumberland Avenue",
             "price": 160,
             "owner": null,
             "pricing": {"house": 100, "hotel": 100},

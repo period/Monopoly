@@ -282,6 +282,10 @@ function moveToPosition(gameId, player, amount, callback) {
         io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
         if (toGo == 0) {
             clearInterval(mover);
+            if(games[gameId].properties[player.position].type == "go") {
+                updateBalance(gameId, player, 200);
+                io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> landed on go and received an additional M200." });
+            }
             if (games[gameId].properties[player.position].type == "go-to-jail") {
                 player.position = 10; // landed on go to jail; send to jail
                 io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
