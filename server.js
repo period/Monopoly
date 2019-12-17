@@ -272,7 +272,9 @@ function updateBalance(gameId, player, amount) {
         player.piece = null;
         player.position = 0;
         player.gid = null;
+        sendGameUpdate(gameId);
     }
+    
 }
 function moveToPosition(gameId, player, amount, callback) {
     var toGo = amount;
