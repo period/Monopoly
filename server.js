@@ -328,6 +328,7 @@ function moveToPosition(gameId, player, amount, callback) {
                             // Passed go, issue 200
                             updateBalance(gameId, player, 200);
                         }
+                        io.to(gameId).emit("move-update", { player: player.piece, position: player.position });
                     }
                 }
                 else if(selectedCard.type == "ALL_PLAYERS_PAY_PLAYER") {
