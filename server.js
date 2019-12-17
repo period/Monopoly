@@ -256,6 +256,7 @@ function updateBalance(gameId, player, amount) {
     if(games[gameId] == null) return;
     player.balance += amount;
     io.to(gameId).emit("balance-update", { player: player.piece, balance: player.balance });
+    sendGameUpdate(gameId);
     if(player.balance < 0) {
         io.to(gameId).emit("message", {type: "danger", message: "<strong>" + player.piece + "</strong> has gone bankrupt. They are now out of the game. All properties owned by them are now un-owned."});
         for(var i = 0; i < games[gameId].properties.length; i++) {
