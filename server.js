@@ -369,7 +369,7 @@ function moveToPosition(gameId, player, amount, callback) {
             }
             else if (games[gameId].properties[player.position].type == "tax") {
                 io.to(gameId).emit("message", { type: "warning", message: "<strong>" + player.piece + "</strong> was ordered to pay <strong>" + games[gameId].properties[player.position].tax + "</strong> in tax." });
-                updateBalance(gameId, player, games[gameId].properties[player.position].tax);
+                updateBalance(gameId, player, 0-games[gameId].properties[player.position].tax);
                 updateFreeParking(gameId, games[gameId].properties[player.position].tax);
             }
             else if (games[gameId].properties[player.position].type == "house" || games[gameId].properties[player.position].type == "utility" || games[gameId].properties[player.position].type == "station") {
