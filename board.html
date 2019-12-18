@@ -758,6 +758,10 @@
                     $("#propertymodal-action-mortgage").show();
                     $("#propertymodal-action-addhouse").show();
                     $("#propertymodal-action-addhotel").show();
+                    if(property.addons.length > 0) {
+                        $("#propertymodal-action-sellhouse").show();
+                        $("#propertymodal-action-sellhotel").show();
+                    }
                 }
 
                 $("#propertymodal-rent-none").text(property.rent[0]);
