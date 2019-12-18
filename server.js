@@ -487,3 +487,6 @@ function gameOver(gameId) {
         games[gameId] = null;
     }, 15000);
 }
+process.on("uncaughtException", function(ex) {
+    console.log("Caught " + ex);
+});
