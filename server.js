@@ -23,6 +23,21 @@ app.get("/create-game", function (req, res) {
     res.send(JSON.stringify({ game: gameId }));
 
 })
+app.get("/games", function(req, res) {
+    res.header("Content-Type", "application/json");
+    res.send(JSON.stringify(Object.keys(games)))
+})
+app.get("/game/:game", function(req, res) {
+    res.header("Content-Type", "application/json");
+    if(games[req.params.game] == null) return res.send(JSON.stringify({message: "Game not found"}));
+    var tmpGame = Object.assign({}, games[req.params.game]);
+    var tmpPlayers = [];
+    for(var i = 0; i < tmpGame.players.length; i++) {
+        tmpPlayers.push({piece: tmpGame.players[i].piece, balance: tmpGame.players[i].balance, position: tmpGame.players[i].position});
+    }
+    tmpGame.players = tmpPlayers;
+    res.send(JSON.stringify(tmpGame));
+})
 
 function sendGameUpdate(gameId) {
     var tmpGame = Object.assign({}, games[gameId]);
